@@ -62,9 +62,9 @@ git checkout -b phase-2-database-schema  # Name reflects phase number and focus
 # - Commit changes: git commit -m "Complete Phase 2.1: Database client setup"
 
 # 5. After completing ENTIRE phase:
-pnpm typecheck  # Must pass with 0 errors
-pnpm lint       # Must pass with 0 warnings
-pnpm test       # All tests must pass
+npm run typecheck --workspaces  # Must pass with 0 errors
+npm run lint --workspaces       # Must pass with 0 warnings
+npm run test --workspaces       # All tests must pass
 
 # Fix any issues found by typecheck/lint/test before proceeding
 
@@ -367,8 +367,8 @@ Before marking any task as complete, verify:
 - [ ] All "Implementation Principles" followed
 - [ ] All "Acceptance Criteria" validated
 - [ ] All specified tests written and passing
-- [ ] TypeScript compiles with zero errors (`pnpm typecheck`)
-- [ ] ESLint passes with zero warnings (`pnpm lint`)
+- [ ] TypeScript compiles with zero errors (`npm run typecheck --workspaces`)
+- [ ] ESLint passes with zero warnings (`npm run lint --workspaces`)
 - [ ] No `any` types (unless justified with comment)
 - [ ] Related documentation updated (if specified)
 - [ ] Code follows naming conventions above
