@@ -1,13 +1,13 @@
 export default {
   'packages/backend/**/*.{ts,tsx}': [
-    'pnpm --filter @automechanica/backend exec eslint --fix',
-    'pnpm --filter @automechanica/backend exec prettier --write',
-    'pnpm --filter @automechanica/backend typecheck'
+    'npm run lint:fix --workspace @automechanica/backend --',
+    'npm run format --workspace @automechanica/backend --',
+    'npm run typecheck --workspace @automechanica/backend --'
   ],
   'packages/frontend/**/*.{ts,tsx,css}': [
-    'pnpm --filter @automechanica/frontend exec eslint --fix',
-    'pnpm --filter @automechanica/frontend exec prettier --write',
-    'pnpm --filter @automechanica/frontend typecheck'
+    'npm run lint:fix --workspace @automechanica/frontend --',
+    'npm run format --workspace @automechanica/frontend --',
+    'npm run typecheck --workspace @automechanica/frontend --'
   ],
-  '*.{json,md}': ['pnpm exec prettier --write']
+  '*.{json,md}': ['npm exec prettier --write']
 };

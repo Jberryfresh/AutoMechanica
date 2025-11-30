@@ -15,10 +15,10 @@ AutoMechanica is an AI-powered automotive parts e-commerce platform engineered f
 
 ## Getting Started (5 minutes)
 
-1. Install [pnpm](https://pnpm.io/installation) if not already available.
-2. Clone the repository and install dependencies:
+1. Ensure Node.js 20+ and npm 11+ are available.
+2. Clone the repository and install dependencies with npm workspaces:
    ```bash
-   pnpm install
+   npm install
    ```
 3. Copy the environment templates and update values as needed:
    ```bash
@@ -29,11 +29,11 @@ AutoMechanica is an AI-powered automotive parts e-commerce platform engineered f
    Templates include sensible defaults for local backend and frontend URLs.
 4. Run the backend API in development mode:
    ```bash
-   pnpm --filter @automechanica/backend dev
+   npm run dev --workspace @automechanica/backend
    ```
 5. In a separate terminal, start the frontend:
    ```bash
-   pnpm --filter @automechanica/frontend dev
+   npm run dev --workspace @automechanica/frontend
    ```
 6. Visit `http://localhost:5173` to view the UI and `http://localhost:3001/api/health` for the API health check.
 
@@ -49,10 +49,10 @@ Key specifications live in `/docs`. Start with:
 
 ## Quality Gates
 
-- `pnpm lint` — Run linting across all workspaces
-- `pnpm typecheck` — Enforce strict TypeScript checks
-- `pnpm test` — Execute backend and frontend test suites
-- `pnpm format:check` — Verify formatting consistency
+- `npm run lint --workspaces` — Run linting across all workspaces
+- `npm run typecheck --workspaces` — Enforce strict TypeScript checks
+- `npm run test --workspaces` — Execute backend and frontend test suites
+- `npm run format:check` — Verify formatting consistency
 
 ## License
 

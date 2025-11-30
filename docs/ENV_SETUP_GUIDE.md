@@ -10,7 +10,7 @@ This guide documents every environment variable, validation rules, and best prac
 
 - Linux (preferred), macOS (supported), Windows via WSL
 - Node.js 20+
-- pnpm
+- npm 11+
 - PostgreSQL 14+ with `vector` extension
 - Git
 
@@ -102,7 +102,7 @@ Root `.env` is used by the backend, while the frontend reads `VITE_*` values fro
 ## 5. Running the Backend
 
 ```bash
-pnpm --filter @automechanica/backend dev
+npm run dev --workspace @automechanica/backend
 ```
 
 - Health endpoint: `http://localhost:3001/api/health`
@@ -114,7 +114,7 @@ pnpm --filter @automechanica/backend dev
 ## 6. Running the Frontend
 
 ```bash
-pnpm --filter @automechanica/frontend dev
+npm run dev --workspace @automechanica/frontend
 ```
 
 The SPA reads `VITE_*` variables from `packages/frontend/.env`. Never store secrets in `VITE_*` variables—they are embedded in the client bundle.
@@ -136,7 +136,7 @@ The SPA reads `VITE_*` variables from `packages/frontend/.env`. Never store secr
 - **Validation failed**: Check console output for missing or malformed variables and update your `.env` accordingly.
 - **CORS errors**: Ensure `FRONTEND_URL` matches the origin you are loading the SPA from.
 - **Connection refused**: Verify PostgreSQL is running and `DATABASE_URL` hostname/port are correct.
-- **Proxy environments**: Configure `pnpm config set https-proxy <proxy-url>` and trust the corporate CA if needed.
+- **Proxy environments**: Configure `npm config set https-proxy <proxy-url>` (and `npm config set proxy` if required) and trust the corporate CA if needed.
 
 ---
 

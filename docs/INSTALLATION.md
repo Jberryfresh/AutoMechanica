@@ -10,7 +10,7 @@ This guide explains how to set up the AutoMechanica monorepo, configure environm
 
 - Linux or macOS (Windows via WSL)
 - Node.js 20+
-- pnpm (workspace package manager)
+- npm 11+ (workspace package manager)
 - Git
 - PostgreSQL 14+ with the `vector` extension
 - curl or HTTP client for health checks
@@ -52,10 +52,10 @@ Never commit populated `.env` files.
 ## 4. Install Dependencies
 
 ```bash
-pnpm install
+npm install
 ```
 
-This installs workspace dependencies and wires Husky git hooks automatically via the root `prepare` script. If hooks are missing, run `pnpm prepare`.
+This installs workspace dependencies and wires Husky git hooks automatically via the root `prepare` script. If hooks are missing, run `npm run prepare`.
 
 ---
 
@@ -77,7 +77,7 @@ This installs workspace dependencies and wires Husky git hooks automatically via
 ## 6. Run the Backend
 
 ```bash
-pnpm --filter @automechanica/backend dev
+npm run dev --workspace @automechanica/backend
 ```
 
 - API health: `http://localhost:3001/api/health`
@@ -88,7 +88,7 @@ pnpm --filter @automechanica/backend dev
 ## 7. Run the Frontend
 
 ```bash
-pnpm --filter @automechanica/frontend dev
+npm run dev --workspace @automechanica/frontend
 ```
 
 Visit `http://localhost:5173` to view the Vite + React scaffold. Hot Module Replacement (HMR) is enabled by default.
@@ -99,7 +99,7 @@ Visit `http://localhost:5173` to view the Vite + React scaffold. Hot Module Repl
 
 - Pre-commit: runs `lint-staged` to lint, format, and typecheck staged files.
 - Commit message: enforces Conventional Commits (`type(scope): summary`).
-- Hooks install automatically on `pnpm install`; re-run `pnpm prepare` if needed.
+- Hooks install automatically on `npm install`; re-run `npm run prepare` if needed.
 
 ---
 
@@ -108,9 +108,9 @@ Visit `http://localhost:5173` to view the Vite + React scaffold. Hot Module Repl
 After installation, validate tooling:
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm test
+npm run lint --workspaces
+npm run typecheck --workspaces
+npm run test --workspaces
 ```
 
 Check the backend health endpoint and ensure the frontend renders brand colors and CTA buttons.
@@ -122,4 +122,4 @@ Check the backend health endpoint and ensure the frontend renders brand colors a
 - Ensure Node.js 20+ is active (`node -v`).
 - Verify `.env` files are present and correctly populated.
 - If git hooks do not run, ensure scripts are executable (`chmod +x .husky/*`).
-- For proxy environments, configure pnpm `https-proxy` and trust store as needed.
+- For proxy environments, configure npm `https-proxy`/`proxy` and trust store as needed.
