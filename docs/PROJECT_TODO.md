@@ -298,17 +298,17 @@ AutoMechanica/
 - **Backend**: Node.js 20.x LTS + Express
 - **Frontend**: React 18.x + Vite + Tailwind CSS 3.x
 - **Database**: PostgreSQL 15+ with pgvector extension
-- **Package Manager**: pnpm (faster than npm, better disk usage)
+- **Package Manager**: npm workspaces
 - **Testing**: Vitest (backend + frontend) + Playwright (E2E)
 - **Linting**: ESLint 8.x + Prettier 3.x
 - **Type Checking**: TypeScript strict mode
 
 **When This Phase Is Done:**
 - ✅ Repository cloneable and buildable by any developer
-- ✅ `pnpm install && pnpm dev` starts local development servers
-- ✅ `pnpm lint` passes with zero warnings
-- ✅ `pnpm typecheck` passes with zero errors
-- ✅ `pnpm test` runs successfully
+- ✅ `npm install` completes and workspace dev servers start
+- ✅ `npm run lint --workspaces` passes with zero warnings
+- ✅ `npm run typecheck --workspaces` passes with zero errors
+- ✅ `npm run test --workspaces` runs successfully
 - ✅ Git pre-commit hooks work correctly
 - ✅ CI pipeline runs successfully on GitHub Actions
 - ✅ `.env.example` documents all required environment variables
@@ -320,7 +320,7 @@ AutoMechanica/
 
 #### 1.1.1 — Create base repo structure
 
-- [ ] 🔴 **P0-CRITICAL** — Initialize repo & core folders
+- [✓] 🔴 **P0-CRITICAL** — Initialize repo & core folders
 
 **Description**  
 Create the root project layout and basic config files. This should match the structure assumed by all design docs.
@@ -374,7 +374,7 @@ Create the root project layout and basic config files. This should match the str
 
 #### 1.1.2 — Place architecture/design docs into /docs
 
-- [ ] 🔴 **P0-CRITICAL** — Copy spec documents into repo
+- [✓] 🔴 **P0-CRITICAL** — Copy spec documents into repo
 
 **Description**  
 Persist all previously generated design documents into `/docs` so that Codex and developers can reference them consistently.
@@ -426,7 +426,7 @@ Persist all previously generated design documents into `/docs` so that Codex and
 
 #### 1.2.1 — Backend TypeScript Configuration & Tooling
 
-- [ ] 🔴 **P0-CRITICAL** — Setup complete backend TypeScript project with linting and testing
+- [✓] 🔴 **P0-CRITICAL** — Setup complete backend TypeScript project with linting and testing
 
 **Description**
 
@@ -549,10 +549,10 @@ Add npm scripts for common development tasks in `/packages/backend/package.json`
 - [ ] `/packages/backend/tests/setup.ts` created for global test setup
 - [ ] Sample test file `/packages/backend/tests/unit/health.test.ts` exists and passes
 - [ ] `/packages/backend/src/index.ts` enhanced with production-ready structure
-- [ ] `pnpm --filter @automechanica/backend dev` starts server on port 3001
-- [ ] `pnpm --filter @automechanica/backend build` compiles without errors
-- [ ] `pnpm --filter @automechanica/backend lint` passes with no errors
-- [ ] `pnpm --filter @automechanica/backend test:run` runs successfully
+- [ ] `npm run dev --workspace @automechanica/backend` starts server on port 3001
+- [ ] `npm run build --workspace @automechanica/backend` compiles without errors
+- [ ] `npm run lint --workspace @automechanica/backend` passes with no errors
+- [ ] `npm run test:run --workspace @automechanica/backend` runs successfully
 - [ ] Health endpoint `http://localhost:3001/api/health` returns proper JSON
 - [ ] Path aliases (`@/`, `@/api/*`, etc.) resolve correctly in imports
 - [ ] TypeScript strict mode catches common errors (no implicit any, null checks, etc.)
@@ -571,10 +571,10 @@ Add npm scripts for common development tasks in `/packages/backend/package.json`
 
 **Tests Required**
 
-- **Automated**: `pnpm --filter @automechanica/backend test:run` → All tests pass
-- **Automated**: `pnpm --filter @automechanica/backend lint` → No errors
-- **Automated**: `pnpm --filter @automechanica/backend typecheck` → No type errors
-- **Automated**: `pnpm --filter @automechanica/backend build` → Compiles successfully
+- **Automated**: `npm run test:run --workspace @automechanica/backend` → All tests pass
+- **Automated**: `npm run lint --workspace @automechanica/backend` → No errors
+- **Automated**: `npm run typecheck --workspace @automechanica/backend` → No type errors
+- **Automated**: `npm run build --workspace @automechanica/backend` → Compiles successfully
 - **Manual**: Start dev server → `curl http://localhost:3001/api/health` returns valid JSON
 - **Manual**: Make syntax error in src/index.ts → Verify ESLint catches it
 - **Manual**: Add type error (e.g., assign number to string) → Verify TypeScript catches it
@@ -604,7 +604,7 @@ Add npm scripts for common development tasks in `/packages/backend/package.json`
 
 #### 1.2.2 — Frontend TypeScript, Vite & Tailwind Configuration
 
-- [ ] 🟡 **P1-HIGH** — Setup complete frontend project with React, Vite, Tailwind CSS
+- [✓] 🟡 **P1-HIGH** — Setup complete frontend project with React, Vite, Tailwind CSS
 
 **Description**
 
@@ -765,9 +765,9 @@ Add npm scripts for common frontend development tasks:
 - [ ] Tailwind CSS configured with AutoMechanica brand colors (electric-teal, deep-navy, gunmetal)
 - [ ] ESLint configured for React and TypeScript
 - [ ] Vitest configured with jsdom environment
-- [ ] `pnpm --filter @automechanica/frontend dev` starts Vite dev server on port 5173
-- [ ] `pnpm --filter @automechanica/frontend build` compiles without errors
-- [ ] `pnpm --filter @automechanica/frontend lint` passes with no errors
+- [ ] `npm run dev --workspace @automechanica/frontend` starts Vite dev server on port 5173
+- [ ] `npm run build --workspace @automechanica/frontend` compiles without errors
+- [ ] `npm run lint --workspace @automechanica/frontend` passes with no errors
 - [ ] Brand colors visible in UI (buttons use electric-teal-600, heading uses deep-navy-900)
 - [ ] Hot module replacement works (edit component → instant UI update)
 - [ ] Path aliases (`@/components`, etc.) resolve correctly
@@ -790,12 +790,12 @@ Add npm scripts for common frontend development tasks:
 
 **Tests Required**
 
-- **Manual**: `pnpm --filter @automechanica/frontend dev` → Open http://localhost:5173 → Verify UI displays with correct brand colors
+- **Manual**: `npm run dev --workspace @automechanica/frontend` → Open http://localhost:5173 → Verify UI displays with correct brand colors
 - **Manual**: Edit component in src/main.tsx → Verify HMR updates UI instantly
 - **Manual**: Click buttons → Verify hover states work (color changes on hover)
-- **Automated**: `pnpm --filter @automechanica/frontend lint` → No errors
-- **Automated**: `pnpm --filter @automechanica/frontend typecheck` → No type errors
-- **Automated**: `pnpm --filter @automechanica/frontend build` → Successful build
+- **Automated**: `npm run lint --workspace @automechanica/frontend` → No errors
+- **Automated**: `npm run typecheck --workspace @automechanica/frontend` → No type errors
+- **Automated**: `npm run build --workspace @automechanica/frontend` → Successful build
 - **Manual**: Inspect Tailwind classes in browser DevTools → Verify brand colors applied correctly
 
 **Dependencies**
@@ -853,7 +853,7 @@ Add npm scripts for common frontend development tasks:
 
 #### 1.2.2 — Frontend React + Tailwind scaffold
 
-- [ ] 🟡 **P1-HIGH** — Setup frontend project
+- [✓] 🟡 **P1-HIGH** — Setup frontend project
 
 **Description**  
 Create a React + Tailwind frontend in `/frontend` with a basic layout, brand colors, and a placeholder home page.
@@ -901,7 +901,7 @@ Create a React + Tailwind frontend in `/frontend` with a basic layout, brand col
 
 #### 1.2.3 — Environment Variables & Configuration Management
 
-- [ ] 🟡 **P1-HIGH** — Create comprehensive environment configuration with validation
+- [✓] 🟡 **P1-HIGH** — Create comprehensive environment configuration with validation
 
 **Description**
 
@@ -1063,7 +1063,7 @@ Ensure `/.gitignore` includes:
 - **Automated**: Create test that calls `validateEnv()` with missing required var → Verify throws error
 - **Automated**: Create test that calls `validateEnv()` with invalid format (e.g., invalid PORT) → Verify throws error
 - **Automated**: Create test that calls `validateEnv()` with all valid vars → Verify returns config object
-- **Manual**: Delete `.env` file → Run `pnpm dev` → Verify clear error message about missing .env
+- **Manual**: Delete `.env` file → Run `npm run dev --workspace @automechanica/backend` → Verify clear error message about missing .env
 - **Manual**: Set invalid `PORT=999999` → Run backend → Verify validation error
 - **Manual**: Copy `.env.example` to `.env` → Fill in only required vars → Verify app starts
 - **Manual**: Review `ENV_SETUP_GUIDE.md` → Verify all variables in `.env.example` are documented
@@ -1093,7 +1093,7 @@ Ensure `/.gitignore` includes:
 
 #### 1.2.4 — Git Hooks & Pre-commit Checks
 
-- [ ] 🟡 **P1-HIGH** — Setup Husky for automated quality checks
+- [✓] 🟡 **P1-HIGH** — Setup Husky for automated quality checks
 
 **Description**
 
@@ -1110,8 +1110,8 @@ Install and configure Husky with lint-staged to automatically run linting, type 
 **Step 1: Install Husky at Repository Root**
 
 1. Navigate to repository root
-2. Install Husky as dev dependency: `pnpm add -D husky`
-3. Initialize Husky: `pnpm exec husky init`
+2. Install Husky as dev dependency: `npm install -D husky`
+3. Initialize Husky: `npm exec husky init`
    - This creates `.husky/` directory
    - Creates `.husky/pre-commit` hook file
 4. Ensure `.husky/` is committed to git (not in .gitignore)
@@ -1131,7 +1131,7 @@ Install and configure Husky with lint-staged to automatically run linting, type 
 Edit `/.husky/pre-commit`:
 1. Add shebang: `#!/usr/bin/env sh`
 2. Add Husky source line: `. "$(dirname "$0")/_/husky.sh"`
-3. Add lint-staged command: `pnpm exec lint-staged`
+3. Add lint-staged command: `npm exec lint-staged`
 4. Make file executable: `chmod +x .husky/pre-commit`
 
 **Step 4: Create Commit Message Validation (Optional but Recommended)**
@@ -1146,9 +1146,9 @@ Create `/.husky/commit-msg`:
 **Step 5: Configure package.json Scripts**
 
 Update `/package.json` at repository root:
-1. Add "prepare" script: `"prepare": "husky"` (runs on `pnpm install`)
-2. Add "lint" script: `"lint": "pnpm -r lint"` (runs lint in all packages)
-3. Add "typecheck" script: `"typecheck": "pnpm -r typecheck"` (type check all packages)
+1. Add "prepare" script: `"prepare": "husky"` (runs on `npm install`)
+2. Add "lint" script: `"lint": "npm --workspaces --if-present run lint"` (runs lint in all packages)
+3. Add "typecheck" script: `"typecheck": "npm --workspaces --if-present run typecheck"` (type check all packages)
 4. Add "format" script: `"format": "prettier --write \"**/*.{ts,tsx,json,md}\""` (format all files)
 5. Add "format:check" script: `"format:check": "prettier --check \"**/*.{ts,tsx,json,md}\""` (check formatting)
 
@@ -1165,7 +1165,7 @@ Update `/docs/CODE_STYLE_AND_CONVENTIONS.md`:
 **Step 7: Update INSTALLATION.md**
 
 Update `/docs/INSTALLATION.md`:
-1. Note that git hooks are automatically installed on `pnpm install`
+1. Note that git hooks are automatically installed on `npm install`
 2. Explain what developers will see when they commit (linting/formatting output)
 3. Add troubleshooting section if hooks don't run (check file permissions, .husky directory)
 
@@ -1174,7 +1174,7 @@ Update `/docs/INSTALLATION.md`:
 1. Make an intentional linting error (e.g., add `console.log("test")` without semicolon)
 2. Try to commit → Verify pre-commit hook catches error
 3. Fix error, commit again → Verify commit succeeds
-4. Verify `pnpm install` in fresh clone automatically sets up hooks
+4. Verify `npm install` in fresh clone automatically sets up hooks
 
 **Acceptance Criteria**
 
@@ -1186,7 +1186,7 @@ Update `/docs/INSTALLATION.md`:
 - [ ] Committing TypeScript file with linting error → Hook fails, commit blocked
 - [ ] Committing TypeScript file with formatting issue → Hook auto-formats, commit succeeds
 - [ ] Committing with invalid commit message → Hook fails (if commit-msg hook enabled)
-- [ ] `pnpm install` in fresh clone → Hooks automatically installed
+- [ ] `npm install` in fresh clone → Hooks automatically installed
 - [ ] Documentation updated explaining git hooks and commit format
 - [ ] Hooks run only on staged files (not entire codebase) for speed
 
@@ -1204,7 +1204,7 @@ Update `/docs/INSTALLATION.md`:
 - **Manual**: Create file with linting error → `git commit` → Verify blocked
 - **Manual**: Create file with formatting issue → `git commit` → Verify auto-formatted
 - **Manual**: Use invalid commit message → `git commit` → Verify blocked (if commit-msg hook)
-- **Manual**: Run `pnpm install` in fresh clone → Verify `.husky` directory created
+- **Manual**: Run `npm install` in fresh clone → Verify `.husky` directory created
 - **Manual**: Check hook execution time → Should complete in <10 seconds for typical commit
 - **Manual**: Stage 10+ files → Verify hooks only run on staged files, not entire project
 
@@ -1233,7 +1233,7 @@ Update `/docs/INSTALLATION.md`:
 
 #### 1.2.5 — CI/CD Pipeline (GitHub Actions)
 
-- [ ] 🔴 **P0-CRITICAL** — Setup automated testing and build pipeline
+- [✓] 🔴 **P0-CRITICAL** — Setup automated testing and build pipeline
 
 **Description**
 
@@ -1272,7 +1272,7 @@ Create `/.github/workflows/ci.yml`:
    - Use recent Ubuntu runner
    - Checkout code with appropriate depth
    - Setup Node.js (match project version requirements)
-   - Setup pnpm (match project version)
+   - Use npm workspaces (match project version)
    - **Cache dependencies** efficiently (hash of lock file)
    - Install dependencies with frozen lockfile
    - Run appropriate commands for that job
@@ -1330,12 +1330,12 @@ Update `/README.md`:
 
 Create `/scripts/ci-local.sh` (or `.ps1` for Windows):
 1. Script that runs all CI checks locally:
-   - `pnpm run lint`
-   - `pnpm run typecheck`
-   - `pnpm --filter @automechanica/backend test:run`
-   - `pnpm --filter @automechanica/frontend test:run`
-   - `pnpm --filter @automechanica/backend build`
-   - `pnpm --filter @automechanica/frontend build`
+   - `npm run lint --workspaces`
+   - `npm run typecheck --workspaces`
+   - `npm run test:run --workspace @automechanica/backend`
+   - `npm run test:run --workspace @automechanica/frontend`
+   - `npm run build --workspace @automechanica/backend`
+   - `npm run build --workspace @automechanica/frontend`
 2. Exit with code 1 if any step fails
 3. Print summary of results
 4. Add to package.json scripts as `"ci:local": "./scripts/ci-local.sh"`
@@ -1343,8 +1343,8 @@ Create `/scripts/ci-local.sh` (or `.ps1` for Windows):
 **Step 7: Optimize CI Performance**
 
 1. Enable dependency caching (already in steps above)
-2. Use pnpm efficiently:
-   - `--frozen-lockfile` to prevent lock file changes
+2. Use npm workspaces efficiently:
+   - Leverage lockfile caching to prevent repeated installs
    - Parallel execution where possible
 3. Set appropriate timeout for jobs (default 60 minutes may be too long)
 4. Consider matrix strategy for testing multiple Node versions (optional)
@@ -1396,7 +1396,7 @@ Update `/docs/DEPLOYMENT.md`:
 - **Manual**: Create PR with type error → Verify Type Check job fails
 - **Manual**: Create PR with build error → Verify Build job fails
 - **Manual**: Check CI execution time → Should be <10 minutes
-- **Manual**: Run `pnpm run ci:local` → Verify replicates CI checks locally
+- **Manual**: Run `npm run ci:local` → Verify replicates CI checks locally
 - **Manual**: Review Actions tab on GitHub → Verify workflow runs appear
 
 **Dependencies**
@@ -1532,16 +1532,16 @@ Add to backend package.json scripts:
 Update `/docs/INSTALLATION.md`:
 1. Add "Database Setup" section:
    - Prerequisites: Docker and Docker Compose installed
-   - Step 1: Start database: `pnpm db:start`
-   - Step 2: Verify database is running: `pnpm db:logs`
-   - Step 3: Test connection: `pnpm --filter @automechanica/backend db:test`
+   - Step 1: Start database: `npm run db:start`
+   - Step 2: Verify database is running: `npm run db:logs`
+   - Step 3: Test connection: `npm run db:test --workspace @automechanica/backend`
    - Note: First startup takes longer (downloading Docker image)
 2. Add "Database Management" section:
-   - Stop database: `pnpm db:stop`
-   - View logs: `pnpm db:logs`
-   - Access psql shell: `pnpm db:shell`
-   - Reset database (delete all data): `pnpm db:reset`
-   - Access pgAdmin UI: `pnpm pgadmin:start` then open http://localhost:5050
+   - Stop database: `npm run db:stop`
+   - View logs: `npm run db:logs`
+   - Access psql shell: `npm run db:shell`
+   - Reset database (delete all data): `npm run db:reset`
+   - Access pgAdmin UI: `npm run pgadmin:start` then open http://localhost:5050
 
 3. Add troubleshooting:
    - Port 5432 already in use → Stop other PostgreSQL instances
@@ -1568,26 +1568,26 @@ Create `/docs/DATABASE_MANAGEMENT.md` (new file):
 
 **Step 8: Test Database Setup**
 
-1. Start database: `pnpm db:start`
+1. Start database: `npm run db:start`
 2. Wait for health check to pass (check logs)
-3. Run connection test: `pnpm --filter @automechanica/backend db:test`
-4. Access psql shell: `pnpm db:shell`
+3. Run connection test: `npm run db:test --workspace @automechanica/backend`
+4. Access psql shell: `npm run db:shell`
 5. Verify pgvector: `\dx vector`
-6. Stop database: `pnpm db:stop`
-7. Reset database: `pnpm db:reset`
+6. Stop database: `npm run db:stop`
+7. Reset database: `npm run db:reset`
 8. Verify data is cleared
 
 **Acceptance Criteria**
 
 - [ ] `/docker-compose.yml` exists with PostgreSQL and pgAdmin services
 - [ ] `/scripts/init-db.sql` enables pgvector extension
-- [ ] `pnpm db:start` starts PostgreSQL container
-- [ ] `pnpm db:logs` shows PostgreSQL logs
-- [ ] `pnpm db:shell` opens psql shell
-- [ ] `pnpm --filter @automechanica/backend db:test` verifies connection
+- [ ] `npm run db:start` starts PostgreSQL container
+- [ ] `npm run db:logs` shows PostgreSQL logs
+- [ ] `npm run db:shell` opens psql shell
+- [ ] `npm run db:test --workspace @automechanica/backend` verifies connection
 - [ ] pgvector extension is installed and queryable
 - [ ] Database data persists across container restarts
-- [ ] `pnpm db:reset` clears all data and recreates database
+- [ ] `npm run db:reset` clears all data and recreates database
 - [ ] `INSTALLATION.md` updated with database setup instructions
 - [ ] `DATABASE_MANAGEMENT.md` created with comprehensive docs
 - [ ] .env.example updated with correct DATABASE_URL
@@ -1608,13 +1608,13 @@ Create `/docs/DATABASE_MANAGEMENT.md` (new file):
 
 **Tests Required**
 
-- **Manual**: `pnpm db:start` → Verify container starts
-- **Manual**: `pnpm db:logs` → Verify no errors in logs
-- **Manual**: `pnpm --filter @automechanica/backend db:test` → Verify connection successful
-- **Manual**: `pnpm db:shell` → Run `\dx` → Verify pgvector extension listed
-- **Manual**: `pnpm db:stop && pnpm db:start` → Verify data persists
-- **Manual**: `pnpm db:reset` → Verify database cleared
-- **Manual**: `pnpm pgadmin:start` → Open http://localhost:5050 → Verify can connect to database
+- **Manual**: `npm run db:start` → Verify container starts
+- **Manual**: `npm run db:logs` → Verify no errors in logs
+- **Manual**: `npm run db:test --workspace @automechanica/backend` → Verify connection successful
+- **Manual**: `npm run db:shell` → Run `\dx` → Verify pgvector extension listed
+- **Manual**: `npm run db:stop && npm run db:start` → Verify data persists
+- **Manual**: `npm run db:reset` → Verify database cleared
+- **Manual**: `npm run pgadmin:start` → Open http://localhost:5050 → Verify can connect to database
 - **Manual**: Check Docker volume exists: `docker volume ls | grep postgres-data`
 
 **Dependencies**

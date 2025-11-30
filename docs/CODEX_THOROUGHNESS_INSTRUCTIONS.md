@@ -158,9 +158,9 @@ Ask yourself these questions. If ANY answer is "no" or "unsure", the task is NOT
 **Testing:**
 - [ ] Did I write tests for ALL critical functionality?
 - [ ] Did I write tests for ALL error conditions?
-- [ ] Do ALL tests pass when I run `pnpm test`?
-- [ ] Does TypeScript compile with ZERO errors? (`pnpm typecheck`)
-- [ ] Does ESLint pass with ZERO warnings? (`pnpm lint`)
+- [ ] Do ALL tests pass when I run `npm run test --workspaces`?
+- [ ] Does TypeScript compile with ZERO errors? (`npm run typecheck --workspaces`)
+- [ ] Does ESLint pass with ZERO warnings? (`npm run lint --workspaces`)
 
 **Security & Performance:**
 - [ ] Are ALL database queries parameterized (no SQL injection risk)?

@@ -1,0 +1,23 @@
+{
+  "name": "automechanica",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "npm@11.4.2",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "npm --workspaces --if-present run lint",
+    "typecheck": "npm --workspaces --if-present run typecheck",
+    "test": "npm --workspaces --if-present run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,css}\""
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "typescript": "5.5.4"
+  }
+}
