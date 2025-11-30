@@ -11,13 +11,21 @@ const Header: FC = () => (
       </div>
       <div>
         <p className="text-xl font-display text-electric-teal-200">{frontendConfig.appName}</p>
-        <p className="text-sm text-soft-graphite">Precision-engineered intelligence for every vehicle</p>
+        <p className="text-sm text-soft-graphite">
+          Precision-engineered intelligence for every vehicle
+        </p>
       </div>
     </div>
     <nav className="flex items-center gap-4 text-sm font-medium text-slate-100">
-      <Link className="hover:text-electric-teal-300" to="/">Home</Link>
-      <Link className="hover:text-electric-teal-300" to="/catalog">Catalog</Link>
-      <Link className="hover:text-electric-teal-300" to="/support">Support</Link>
+      <Link className="hover:text-electric-teal-300" to="/">
+        Home
+      </Link>
+      <Link className="hover:text-electric-teal-300" to="/catalog">
+        Catalog
+      </Link>
+      <Link className="hover:text-electric-teal-300" to="/support">
+        Support
+      </Link>
     </nav>
   </header>
 );

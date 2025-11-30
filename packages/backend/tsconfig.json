@@ -5,16 +5,12 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "./",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
     "noEmitOnError": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["./*"]
-    },
     "types": ["node"]
   },
   "include": ["src/**/*", "tests/**/*", "vitest.config.ts"],

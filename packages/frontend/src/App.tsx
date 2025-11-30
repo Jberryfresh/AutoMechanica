@@ -12,13 +12,16 @@ const App: FC = () => {
         <main className="flex flex-1 flex-col gap-8">
           <section className="card grid gap-8 md:grid-cols-2 md:items-center">
             <div className="space-y-4">
-              <p className="text-sm uppercase tracking-[0.2em] text-electric-teal-300">{frontendConfig.appName}</p>
+              <p className="text-sm uppercase tracking-[0.2em] text-electric-teal-300">
+                {frontendConfig.appName}
+              </p>
               <h1 className="text-4xl font-semibold leading-tight text-electric-teal-50">
                 AI-powered automotive parts with confident fitment intelligence.
               </h1>
               <p className="text-lg text-soft-graphite">
-                Build faster with pre-wired tooling, brand-safe UI components, and strict typing across the
-                stack. AutoMechanica pairs clean architecture with AI agents to keep your catalog reliable.
+                Build faster with pre-wired tooling, brand-safe UI components, and strict typing
+                across the stack. AutoMechanica pairs clean architecture with AI agents to keep your
+                catalog reliable.
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <a className="button-primary" href="/docs">
@@ -33,7 +36,9 @@ const App: FC = () => {
               <div className="flex items-center justify-between rounded-lg border border-gunmetal-700 bg-gunmetal-900/60 px-4 py-3">
                 <div>
                   <p className="text-sm text-soft-graphite">Environment</p>
-                  <p className="text-lg font-semibold text-electric-teal-200">{import.meta.env.MODE}</p>
+                  <p className="text-lg font-semibold text-electric-teal-200">
+                    {import.meta.env.MODE}
+                  </p>
                 </div>
                 <span className="rounded-full bg-mint-green px-3 py-1 text-xs font-semibold text-charcoal-black shadow-brand">
                   Ready

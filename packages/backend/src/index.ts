@@ -1,11 +1,11 @@
 import compression from 'compression';
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express, { type NextFunction, type Request, type Response } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-import healthRouter from '@/api/health';
-import { env } from '@/lib/env';
+import healthRouter from './api/health.js';
+import { env } from './lib/env.js';
 
 export interface HttpError extends Error {
   status?: number;
@@ -18,7 +18,7 @@ app.use(helmet());
 app.use(
   cors({
     origin: env.FRONTEND_URL,
-    credentials: true
+    credentials: true,
   })
 );
 app.use(compression());
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 if (env.ENABLE_REQUEST_LOGGING) {
   app.use(
     morgan('combined', {
-      skip: (_req, _res) => env.NODE_ENV === 'test'
+      skip: (_req, _res) => env.NODE_ENV === 'test',
     })
   );
 }
@@ -37,7 +37,7 @@ app.get('/api', (_req, res) => {
   res.json({
     status: 'ok',
     routes: ['/api/health'],
-    environment: env.NODE_ENV
+    environment: env.NODE_ENV,
   });
 });
 app.use('/api', healthRouter);
@@ -45,7 +45,7 @@ app.use('/api', healthRouter);
 app.use((req, res) => {
   res.status(404).json({
     error: 'Not Found',
-    path: req.path
+    path: req.path,
   });
 });
 
@@ -54,7 +54,7 @@ app.use((error: HttpError, _req: Request, res: Response, _next: NextFunction) =>
   const status = error.status ?? 500;
   const payload = {
     error: error.message || 'Internal Server Error',
-    details: env.NODE_ENV === 'development' ? error.details : undefined
+    details: env.NODE_ENV === 'development' ? error.details : undefined,
   };
   // Log server-side for observability without leaking sensitive info to clients
   // eslint-disable-next-line no-console

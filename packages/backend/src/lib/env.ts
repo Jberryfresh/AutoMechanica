@@ -4,9 +4,12 @@ import { z } from 'zod';
 dotenv.config();
 
 const booleanString = z
-  .string()
+  .union([z.string(), z.boolean()])
   .optional()
-  .transform((value) => value !== undefined && value.toLowerCase() !== 'false' && value !== '0');
+  .transform((value) => {
+    if (typeof value === 'boolean') return value;
+    return value !== undefined && value.toLowerCase() !== 'false' && value !== '0';
+  });
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -25,22 +28,16 @@ const envSchema = z.object({
   MAX_CONCURRENT_TASKS: z.coerce.number().int().positive().default(5),
   TASK_TIMEOUT_MS: z.coerce.number().int().positive().default(300000),
   VECTOR_DIMENSIONS: z.coerce.number().int().positive().default(3072),
-  VECTOR_SIMILARITY_THRESHOLD: z.coerce
-    .number()
-    .min(0)
-    .max(1)
-    .default(0.7),
+  VECTOR_SIMILARITY_THRESHOLD: z.coerce.number().min(0).max(1).default(0.7),
   OPENAI_API_KEY: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
-  GOOGLE_API_KEY: z.string().optional()
+  GOOGLE_API_KEY: z.string().optional(),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;
 
 function formatIssues(issues: z.ZodIssue[]): string {
-  return issues
-    .map((issue) => `- ${issue.path.join('.') || 'root'}: ${issue.message}`)
-    .join('\n');
+  return issues.map((issue) => `- ${issue.path.join('.') || 'root'}: ${issue.message}`).join('\n');
 }
 
 function loadEnvironment(): EnvConfig {

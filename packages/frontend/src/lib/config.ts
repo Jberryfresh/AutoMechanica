@@ -21,7 +21,7 @@ export function loadConfig(): FrontendConfig {
   return {
     apiBaseUrl,
     appName,
-    enableMocks: parseBoolean(import.meta.env.VITE_ENABLE_MOCKS, false)
+    enableMocks: parseBoolean(import.meta.env.VITE_ENABLE_MOCKS, false),
   };
 }
 
