@@ -2,242 +2,124 @@
 
 # AutoMechanica — Installation Guide
 
-This document provides step‑by‑step instructions for installing all components of the AutoMechanica system: backend, frontend, database, vector memory, and development tooling.
-
-Codex must generate and maintain this guide consistently as the codebase evolves.
+This guide explains how to set up the AutoMechanica monorepo, configure environment variables, and run backend/frontend services.
 
 ---
 
-# 1. Prerequisites
+## 1. Prerequisites
 
-Before installing AutoMechanica, ensure the following are installed:
-
-### **System Requirements**
-- Linux (recommended), macOS, or Windows with WSL
-- At least 8GB RAM (16GB recommended)
-- At least 20GB disk space
-- Stable internet connection
-
-### **Required Tools**
-- Node.js (LTS version)
-- npm or pnpm
-- PostgreSQL 14+  
-- pgvector extension
+- Linux or macOS (Windows via WSL)
+- Node.js 20+
+- pnpm (workspace package manager)
 - Git
-- Docker (optional, recommended)
-- Python (optional for tooling)
-- curl or wget (for API testing)
+- PostgreSQL 14+ with the `vector` extension
+- curl or HTTP client for health checks
 
 ---
 
-# 2. Clone the Repository
+## 2. Clone the Repository
 
-```
+```bash
 git clone https://github.com/<your-username>/automechanica.git
 cd automechanica
 ```
 
 ---
 
-# 3. Environment Variables
+## 3. Environment Variables
 
-Copy the example file:
+Copy the templates and update values:
 
-```
+```bash
 cp .env.example .env
+cp packages/backend/.env.example packages/backend/.env
+cp packages/frontend/.env.example packages/frontend/.env
 ```
 
-Fill in:
+Key variables (see `docs/ENV_SETUP_GUIDE.md` for full descriptions):
 
-```
-OPENAI_API_KEY=
-ANTHROPIC_API_KEY=
-DATABASE_URL=postgres://user:password@localhost:5432/automechanica
-EMBEDDING_MODEL=text-embedding-3-large
-```
+- `DATABASE_URL` — Postgres connection string
+- `PORT` — Backend port (default 3001)
+- `FRONTEND_URL` — SPA origin (default http://localhost:5173)
+- `BACKEND_URL` — API origin (default http://localhost:3001)
+- `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` — LLM credentials (optional until agents are enabled)
+- `VITE_API_BASE_URL` — Frontend API base URL
 
-Never commit `.env`.
+Never commit populated `.env` files.
 
 ---
 
-# 4. Database Setup
+## 4. Install Dependencies
 
-### **4.1 Install Postgres**
-
-Linux:
-
-```
-sudo apt update
-sudo apt install postgresql postgresql-contrib
+```bash
+pnpm install
 ```
 
-macOS:
-
-```
-brew install postgresql
-```
-
-### **4.2 Create database**
-
-```
-createdb automechanica
-```
-
-### **4.3 Enable pgvector**
-
-Inside `psql`:
-
-```
-CREATE EXTENSION IF NOT EXISTS vector;
-```
-
-### **4.4 Migrate Schema**
-
-Codex must generate migration scripts. Example:
-
-```
-cd backend
-npm run migrate
-```
+This installs workspace dependencies and wires Husky git hooks automatically via the root `prepare` script. If hooks are missing, run `pnpm prepare`.
 
 ---
 
-# 5. Backend Installation
+## 5. Database Setup
 
-```
-cd backend
-npm install
-npm run dev
-```
+1. Install PostgreSQL and enable pgvector:
 
-Your backend API will be available at:
+   ```bash
+   sudo apt install postgresql postgresql-contrib
+   psql -c "CREATE EXTENSION IF NOT EXISTS vector;" -d postgres
+   createdb automechanica
+   ```
 
-```
-http://localhost:3001
-```
-
-Check health:
-
-```
-curl http://localhost:3001/api/health
-```
+2. Ensure `DATABASE_URL` points to the created database.
+3. Migrations will be added in later phases; rerun them as tasks arrive.
 
 ---
 
-# 6. Task Workers
+## 6. Run the Backend
 
-Workers process queue tasks for:
-
-- Fitment Agent  
-- Pricing Agent  
-- SEO Agent  
-- Support Agent  
-- Order Agent  
-- Supplier ingestion  
-- Embedding worker  
-
-Start all workers:
-
-```
-npm run worker:all
+```bash
+pnpm --filter @automechanica/backend dev
 ```
 
-Or run individually:
-
-```
-npm run worker:fitment
-npm run worker:pricing
-npm run worker:seo
-npm run worker:support
-```
-
-Workers must be running for workflows to function.
+- API health: `http://localhost:3001/api/health`
+- Logs include environment and routing information.
 
 ---
 
-# 7. Frontend Installation
+## 7. Run the Frontend
 
-```
-cd frontend
-npm install
-npm run dev
+```bash
+pnpm --filter @automechanica/frontend dev
 ```
 
-Frontend will run at:
-
-```
-http://localhost:3000
-```
+Visit `http://localhost:5173` to view the Vite + React scaffold. Hot Module Replacement (HMR) is enabled by default.
 
 ---
 
-# 8. Optional: Run Entire Stack via Docker
+## 8. Git Hooks
 
-Codex may generate a `docker-compose.yml` like:
-
-```
-docker compose up --build
-```
-
-This launches:
-- Postgres
-- Backend API
-- Workers
-- Frontend (static build)
+- Pre-commit: runs `lint-staged` to lint, format, and typecheck staged files.
+- Commit message: enforces Conventional Commits (`type(scope): summary`).
+- Hooks install automatically on `pnpm install`; re-run `pnpm prepare` if needed.
 
 ---
 
-# 9. Testing Installation
+## 9. Verifications
 
-### Backend Tests
+After installation, validate tooling:
 
-```
-cd backend
-npm run test
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
 ```
 
-### Frontend Tests
-
-```
-cd frontend
-npm run test
-```
+Check the backend health endpoint and ensure the frontend renders brand colors and CTA buttons.
 
 ---
 
-# 10. Common Issues & Fixes
+## 10. Troubleshooting
 
-### **Postgres authentication failed**
-Make sure your `pg_hba.conf` allows md5 or scram-sha-256.
-
-### **pgvector not installed**
-Run:
-
-```
-CREATE EXTENSION vector;
-```
-
-### **CORS errors on frontend**
-Codex must configure backend CORS properly.
-
-### **Workers not processing tasks**
-Check:
-- Database connection
-- Queue visibility
-- Worker logs
-
----
-
-# 11. Verification Checklist
-
-- [ ] Backend running  
-- [ ] Frontend running  
-- [ ] Database connection verified  
-- [ ] pgvector installed  
-- [ ] LLM keys loaded  
-- [ ] Task workers running  
-- [ ] `/api/health` returns OK  
-
----
-
-# End of INSTALLATION.md
+- Ensure Node.js 20+ is active (`node -v`).
+- Verify `.env` files are present and correctly populated.
+- If git hooks do not run, ensure scripts are executable (`chmod +x .husky/*`).
+- For proxy environments, configure pnpm `https-proxy` and trust store as needed.

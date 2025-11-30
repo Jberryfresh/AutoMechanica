@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-gunmetal-900 text-slate-100 antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  @apply font-display text-deep-navy-100;
+}
+
+a {
+  @apply text-electric-teal-400 transition-colors duration-150;
+}
+
+a:hover {
+  @apply text-electric-teal-300;
+}
+
+.button-primary {
+  @apply inline-flex items-center justify-center rounded-lg bg-electric-teal-500 px-5 py-3 font-semibold text-charcoal-black shadow-brand transition hover:bg-electric-teal-400 focus:outline-none focus:ring-2 focus:ring-electric-teal-200;
+}
+
+.button-secondary {
+  @apply inline-flex items-center justify-center rounded-lg border border-electric-teal-400 px-5 py-3 font-semibold text-electric-teal-200 transition hover:bg-electric-teal-50 hover:text-charcoal-black;
+}
+
+.card {
+  @apply rounded-xl border border-gunmetal-700 bg-gunmetal-800/70 p-6 shadow-brand;
+}
