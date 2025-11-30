@@ -320,7 +320,7 @@ AutoMechanica/
 
 #### 1.1.1 — Create base repo structure
 
-- [ ] 🔴 **P0-CRITICAL** — Initialize repo & core folders
+- [✓] 🔴 **P0-CRITICAL** — Initialize repo & core folders
 
 **Description**  
 Create the root project layout and basic config files. This should match the structure assumed by all design docs.
@@ -374,7 +374,7 @@ Create the root project layout and basic config files. This should match the str
 
 #### 1.1.2 — Place architecture/design docs into /docs
 
-- [ ] 🔴 **P0-CRITICAL** — Copy spec documents into repo
+- [✓] 🔴 **P0-CRITICAL** — Copy spec documents into repo
 
 **Description**  
 Persist all previously generated design documents into `/docs` so that Codex and developers can reference them consistently.
@@ -426,7 +426,7 @@ Persist all previously generated design documents into `/docs` so that Codex and
 
 #### 1.2.1 — Backend TypeScript Configuration & Tooling
 
-- [ ] 🔴 **P0-CRITICAL** — Setup complete backend TypeScript project with linting and testing
+- [✓] 🔴 **P0-CRITICAL** — Setup complete backend TypeScript project with linting and testing
 
 **Description**
 
@@ -853,7 +853,7 @@ Add npm scripts for common frontend development tasks:
 
 #### 1.2.2 — Frontend React + Tailwind scaffold
 
-- [ ] 🟡 **P1-HIGH** — Setup frontend project
+- [✓] 🟡 **P1-HIGH** — Setup frontend project
 
 **Description**  
 Create a React + Tailwind frontend in `/frontend` with a basic layout, brand colors, and a placeholder home page.
@@ -901,7 +901,7 @@ Create a React + Tailwind frontend in `/frontend` with a basic layout, brand col
 
 #### 1.2.3 — Environment Variables & Configuration Management
 
-- [ ] 🟡 **P1-HIGH** — Create comprehensive environment configuration with validation
+- [✓] 🟡 **P1-HIGH** — Create comprehensive environment configuration with validation
 
 **Description**
 
@@ -1093,7 +1093,7 @@ Ensure `/.gitignore` includes:
 
 #### 1.2.4 — Git Hooks & Pre-commit Checks
 
-- [ ] 🟡 **P1-HIGH** — Setup Husky for automated quality checks
+- [✓] 🟡 **P1-HIGH** — Setup Husky for automated quality checks
 
 **Description**
 
@@ -1233,7 +1233,7 @@ Update `/docs/INSTALLATION.md`:
 
 #### 1.2.5 — CI/CD Pipeline (GitHub Actions)
 
-- [ ] 🔴 **P0-CRITICAL** — Setup automated testing and build pipeline
+- [✓] 🔴 **P0-CRITICAL** — Setup automated testing and build pipeline
 
 **Description**
 

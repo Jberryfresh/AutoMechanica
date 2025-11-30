@@ -209,6 +209,12 @@ chore/<desc>
 - Tests must pass
 - Include screenshots for UI changes
 
+### **8.4 Git Hooks & Commit Hygiene**
+- Husky pre-commit hooks run `lint-staged` to auto-format and lint staged TypeScript/React files.
+- Commit messages must follow Conventional Commits (`type(scope): summary`).
+- To bypass hooks in emergencies, use `HUSKY=0 git commit` (not recommended; fix the issue instead).
+- Run `pnpm format:check`, `pnpm lint`, and `pnpm typecheck` before opening a PR.
+
 ---
 
 # 9. Linting & Formatting
