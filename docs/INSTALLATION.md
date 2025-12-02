@@ -8,11 +8,12 @@ This guide explains how to set up the AutoMechanica monorepo, configure environm
 
 ## 1. Prerequisites
 
-- Linux or macOS (Windows via WSL)
+- Linux or macOS (Windows via WSL) or Windows with Docker Desktop
 - Node.js 20+
 - npm 11+ (workspace package manager)
 - Git
-- PostgreSQL 14+ with the `vector` extension
+- Docker + Docker Compose plugin (recommended for Postgres)
+- (Alternative) PostgreSQL 15+ with the `vector` extension if not using Docker
 - curl or HTTP client for health checks
 
 ---
@@ -38,10 +39,12 @@ cp packages/frontend/.env.example packages/frontend/.env
 
 Key variables (see `docs/ENV_SETUP_GUIDE.md` for full descriptions):
 
-- `DATABASE_URL` — Postgres connection string
-- `PORT` — Backend port (default 3001)
-- `FRONTEND_URL` — SPA origin (default http://localhost:5173)
-- `BACKEND_URL` — API origin (default http://localhost:3001)
+- `DATABASE_URL` - Postgres connection string (defaults align with Docker Compose)
+- `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` / `POSTGRES_PORT` - database credentials for Docker Compose
+- `PGADMIN_DEFAULT_EMAIL` / `PGADMIN_DEFAULT_PASSWORD` / `PGADMIN_PORT` - optional pgAdmin UI credentials/port
+- `PORT` - Backend port (default 3001)
+- `FRONTEND_URL` - SPA origin (default http://localhost:5173)
+- `BACKEND_URL` - API origin (default http://localhost:3001)
 - `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` — LLM credentials (optional until agents are enabled)
 - `VITE_API_BASE_URL` — Frontend API base URL
 
@@ -61,16 +64,22 @@ This installs workspace dependencies and wires Husky git hooks automatically via
 
 ## 5. Database Setup
 
-1. Install PostgreSQL and enable pgvector:
+Preferred (Docker Compose with pgvector pre-enabled):
 
-   ```bash
-   sudo apt install postgresql postgresql-contrib
-   psql -c "CREATE EXTENSION IF NOT EXISTS vector;" -d postgres
-   createdb automechanica
-   ```
+1. Ensure Docker is running.
+2. Start PostgreSQL: `npm run db:start`
+3. Watch logs until the health check passes: `npm run db:logs`
+4. Verify connectivity and pgvector: `npm run db:test --workspace @automechanica/backend`
+5. Open a psql shell if needed: `npm run db:shell`
+6. (Optional) Start pgAdmin UI: `npm run pgadmin:start` then open `http://localhost:5050` (credentials in `.env`)
+7. Reset data (destructive): `npm run db:reset`
 
-2. Ensure `DATABASE_URL` points to the created database.
-3. Migrations will be added in later phases; rerun them as tasks arrive.
+Alternative (manual Postgres):
+
+- Install PostgreSQL 15+ with the `vector` extension enabled.
+- Ensure `DATABASE_URL` points to your instance and run `CREATE EXTENSION IF NOT EXISTS vector;`.
+
+See `docs/DATABASE_MANAGEMENT.md` for common operations and troubleshooting tips.
 
 ---
 
