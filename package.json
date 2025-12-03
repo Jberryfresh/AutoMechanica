@@ -8,6 +8,14 @@
   ],
   "scripts": {
     "prepare": "husky install",
+    "db:start": "docker compose up -d postgres",
+    "db:stop": "docker compose stop postgres",
+    "db:restart": "docker compose down && docker compose up -d postgres",
+    "db:logs": "docker compose logs -f postgres",
+    "db:reset": "docker compose down -v && docker compose up -d postgres",
+    "db:shell": "node scripts/db-shell.js",
+    "pgadmin:start": "docker compose --profile pgadmin up -d pgadmin",
+    "pgadmin:stop": "docker compose --profile pgadmin stop pgadmin",
     "lint": "npm --workspaces --if-present run lint",
     "typecheck": "npm --workspaces --if-present run typecheck",
     "test": "npm --workspaces --if-present run test",
@@ -15,6 +23,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,css}\""
   },
   "devDependencies": {
+    "dotenv": "^17.2.3",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
