@@ -17,7 +17,11 @@
     "lint:fix": "eslint --fix \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "migrate": "node-pg-migrate -c ./db/pg-migrate.config.cjs up",
+    "migrate:down": "node-pg-migrate -c ./db/pg-migrate.config.cjs down",
+    "migrate:reset": "node-pg-migrate -c ./db/pg-migrate.config.cjs down && node-pg-migrate -c ./db/pg-migrate.config.cjs up",
+    "migrate:status": "node-pg-migrate -c ./db/pg-migrate.config.cjs status"
   },
   "dependencies": {
     "compression": "^1.7.4",
@@ -35,13 +39,14 @@
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.7",
     "@types/node": "^20.12.7",
-    "@types/supertest": "^2.0.16",
     "@types/pg": "^8.15.6",
+    "@types/supertest": "^2.0.16",
     "@typescript-eslint/eslint-plugin": "^7.8.1",
     "@typescript-eslint/parser": "^7.8.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
+    "node-pg-migrate": "^8.0.3",
     "prettier": "^3.2.5",
     "supertest": "^6.3.4",
     "tsx": "^4.7.2",

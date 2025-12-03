@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import healthRouter from './api/health.js';
+import { initializeDatabase } from './db/client.js';
 import { env } from './lib/env.js';
 
 export interface HttpError extends Error {
@@ -62,7 +63,8 @@ app.use((error: HttpError, _req: Request, res: Response, _next: NextFunction) =>
   res.status(status).json(payload);
 });
 
-export function startServer(): void {
+export async function startServer(): Promise<void> {
+  await initializeDatabase();
   const port = env.PORT;
   const server = app.listen(port, () => {
     // eslint-disable-next-line no-console
@@ -83,5 +85,5 @@ export function startServer(): void {
 }
 
 if (env.NODE_ENV !== 'test') {
-  startServer();
+  void startServer();
 }

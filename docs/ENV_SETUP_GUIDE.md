@@ -86,16 +86,31 @@ Root `.env` is used by the backend, while the frontend reads `VITE_*` values fro
 
 ## 4. Database Setup
 
-1. Install PostgreSQL and enable pgvector:
+Preferred (Docker Compose)
 
+1. Ensure Docker is running.
+2. Start Postgres: `npm run db:start`
+3. Verify logs/health: `npm run db:logs`
+4. Test connectivity: `npm run db:test --workspace @automechanica/backend`
+5. Optional pgAdmin UI: `npm run pgadmin:start` and open `http://localhost:5050`
+
+Manual Postgres
+
+1. Install PostgreSQL 15+ and enable pgvector:
    ```bash
-   sudo apt install postgresql postgresql-contrib
    psql -c "CREATE EXTENSION IF NOT EXISTS vector;" -d postgres
    createdb automechanica
    ```
+2. Confirm `DATABASE_URL` points to your instance.
 
-2. Confirm `DATABASE_URL` points to the created database.
-3. Future migrations will align with `docs/DOMAIN_MODEL.md`.
+Migrations (node-pg-migrate)
+
+- Apply: `npm run db:migrate`
+- Rollback: `npm run db:migrate:down`
+- Reset: `npm run db:migrate:reset`
+- Status: `npm run db:migrate:status`
+
+Migrations rely on `DATABASE_URL`; ensure `.env` is present or exported in the shell.
 
 ---
 

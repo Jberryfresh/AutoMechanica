@@ -1687,7 +1687,7 @@ Current CI format job is temporarily disabled because the repository has not bee
 
 #### 2.1.1 — DB client and config
 
-- [ ] 🔴 **P0-CRITICAL** — Setup DB connection layer
+- [x] 🔴 **P0-CRITICAL** — Setup DB connection layer
 
 **Description**  
 Create a single database access layer that can be reused across the backend services, using either an ORM (Prisma, Sequelize) or a query builder (Knex). Follow `CODE_STYLE_AND_CONVENTIONS.md`.
@@ -1836,11 +1836,23 @@ The singleton pattern prevents connection pool fragmentation and ensures consist
 - Requires: Task 1.2.3 (Environment configuration) for `DATABASE_URL`
 - Blocks: All Phase 2.2+ tasks (schema creation depends on this)
 
+**Metadata**
+
+- Branch: `feature/phase2-db-client`
+- StartedBy: Codex
+- StartedAt: 2025-12-02
+- CompletedBy: Codex
+- CompletedAt: 2025-12-02
+- PR:
+- Commit:
+- TestsPassing: YES (backend db client/unit tests, backend/frontend test suites, lint, typecheck)
+- Notes: Added pg-based pool singleton, startup check, migration tooling via node-pg-migrate, pgvector extension migration, and migration docs.
+
 ---
 
-#### 2.1.2 — pgvector extension support
+#### 2.1.2 - pgvector extension support
 
-- [ ] 🔴 **P0-CRITICAL** — Ensure pgvector integration
+- [x] 🔴 **P0-CRITICAL** - Ensure pgvector integration
 
 **Description**  
 Integrate pgvector support according to `VECTOR_MEMORY_DESIGN.md` and ensure the database is prepared to store vector columns.
