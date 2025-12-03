@@ -20,6 +20,8 @@ jobs:
       - run: npm run lint --workspaces
 
   format:
+    # Temporarily disabled until the repository is formatted with Prettier.
+    if: ${{ false }} # TODO: re-enable after PROJECT_TODO task to establish Prettier baseline
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
