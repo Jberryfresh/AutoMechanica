@@ -1,0 +1,4 @@
+fail-on-severity: high
+allow-ghsas:
+  - GHSA-5j98-mcp5-4vw2 # glob CLI command injection via -c/--cmd (transitive via node-pg-migrate)
+  - GHSA-67mh-4wv8-2f99 # esbuild dev server request exposure (transitive via vite)

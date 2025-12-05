@@ -20,7 +20,11 @@
     "typecheck": "npm --workspaces --if-present run typecheck",
     "test": "npm --workspaces --if-present run test",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,css}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,css}\"",
+    "db:migrate": "npm run migrate --workspace @automechanica/backend",
+    "db:migrate:down": "npm run migrate:down --workspace @automechanica/backend",
+    "db:migrate:reset": "npm run migrate:reset --workspace @automechanica/backend",
+    "db:migrate:status": "npm run migrate:status --workspace @automechanica/backend"
   },
   "devDependencies": {
     "dotenv": "^17.2.3",
