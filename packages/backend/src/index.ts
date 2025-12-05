@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import healthRouter from './api/health.js';
-import { initializeDatabase } from './db/client.js';
+import { closePool, initializeDatabase } from './db/client.js';
 import { env } from './lib/env.js';
 
 export interface HttpError extends Error {
@@ -73,15 +73,25 @@ export async function startServer(): Promise<void> {
     console.info(`Health endpoint available at /api/health`);
   });
 
-  const shutdown = (): void => {
-    server.close(() => {
-      // eslint-disable-next-line no-console
-      console.info('Server closed gracefully');
+  const shutdown = async (signal: NodeJS.Signals): Promise<void> => {
+    // eslint-disable-next-line no-console
+    console.info(`Received ${signal}, shutting down gracefully...`);
+    await closePool();
+    await new Promise<void>((resolve) => {
+      server.close(() => {
+        // eslint-disable-next-line no-console
+        console.info('Server closed gracefully');
+        resolve();
+      });
     });
   };
 
-  process.on('SIGTERM', shutdown);
-  process.on('SIGINT', shutdown);
+  process.once('SIGTERM', (signal) => {
+    void shutdown(signal);
+  });
+  process.once('SIGINT', (signal) => {
+    void shutdown(signal);
+  });
 }
 
 if (env.NODE_ENV !== 'test') {
