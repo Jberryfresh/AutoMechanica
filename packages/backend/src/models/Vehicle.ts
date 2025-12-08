@@ -80,6 +80,7 @@ const mapRow = (row: VehicleRow): Vehicle => ({
   createdAt: new Date(row.created_at),
 });
 
+/** Insert a new vehicle after validation/normalization; throws on uniqueness violations. */
 export const createVehicle = async (
   input: VehicleInput,
   pool: Pool = getPool()
@@ -106,6 +107,7 @@ export const createVehicle = async (
   }
 };
 
+/** Find a vehicle by UUID; returns null when not found. */
 export const findVehicleById = async (
   id: string,
   pool: Pool = getPool()
@@ -117,6 +119,10 @@ export const findVehicleById = async (
   return result.rows[0] ? mapRow(result.rows[0]) : null;
 };
 
+/**
+ * Find a vehicle by its natural key (year, make, model, trim, engine) using normalized values.
+ * Uses IS NOT DISTINCT FROM to compare nullable trim.
+ */
 export const findVehicleByKey = async (
   key: VehicleInput,
   pool: Pool = getPool()
@@ -133,6 +139,10 @@ export const findVehicleByKey = async (
   return result.rows[0] ? mapRow(result.rows[0]) : null;
 };
 
+/**
+ * Find an existing vehicle by natural key or create it atomically.
+ * Returns both the vehicle and whether it was newly created.
+ */
 export const findOrCreateByKey = async (
   input: VehicleInput,
   pool: Pool = getPool()
@@ -164,6 +174,10 @@ interface ListFilters {
   offset?: number;
 }
 
+/**
+ * List vehicles with optional filters and deterministic ordering.
+ * Supports pagination via limit/offset with server-side caps.
+ */
 export const listVehicles = async (
   filters: ListFilters = {},
   pool: Pool = getPool()
@@ -209,6 +223,10 @@ export const listVehicles = async (
   return result.rows.map(mapRow);
 };
 
+/**
+ * Search vehicles by make/model/trim using case-insensitive pattern matching.
+ * Caps results to avoid excessive result sets.
+ */
 export const searchVehicles = async (
   query: string,
   limit = 10,
