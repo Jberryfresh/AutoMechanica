@@ -49,7 +49,14 @@ Represents a unique year/make/model/trim/engine combination.
 
 **Indexes:**
 - `(year, make, model, trim, engine)` unique
-- gin index on lower(make), lower(model)
+- B-tree index on `(make, model, year)` for ordered filters and dropdowns
+- Trigram/GIN indexes on lower(make/model) can be added later if search performance requires it
+
+**Normalization Rules:**
+- Year must be an integer between 1900 and 2100 (inclusive)
+- Make/Model/Trim stored in title case with surrounding whitespace trimmed
+- Trim may be null; comparisons use `IS NOT DISTINCT FROM` semantics
+- Engine values are stored as trimmed free-form descriptors (e.g., "2.0L I4")
 
 ---
 
