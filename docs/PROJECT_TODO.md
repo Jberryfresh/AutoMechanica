@@ -1577,6 +1577,7 @@ Create `/docs/DATABASE_MANAGEMENT.md` (new file):
 7. Reset database: `npm run db:reset`
 8. Verify data is cleared
 
+
 **Acceptance Criteria**
 
 - [x] `/docker-compose.yml` exists with PostgreSQL and pgAdmin services
@@ -2006,7 +2007,7 @@ The pgvector extension must be enabled before any vector columns can be created.
 
 #### 2.2.1 — Vehicles table & model
 
-- [ ] 🔴 **P0-CRITICAL** — Implement `vehicles` schema
+- [x] 🔴 **P0-CRITICAL** — Implement `vehicles` schema
 
 **Description**  
 Create the Vehicle table and model exactly as described in `DOMAIN_MODEL.md`.
@@ -2181,7 +2182,7 @@ The combination of (year, make, model, trim, engine) must be unique to prevent d
 
 #### 2.2.2 — Parts, SupplierParts, Fitments tables & models
 
-- [ ] 🔴 **P0-CRITICAL** — Implement core part-related tables
+- [x] 🔴 **P0-CRITICAL** — Implement core part-related tables
 
 **Description**  
 Implement the core entities for canonical parts, supplier parts, and fitment relationships.
@@ -3661,4 +3662,6 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
+
+
 
