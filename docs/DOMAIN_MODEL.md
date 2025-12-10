@@ -76,6 +76,14 @@ A unique, vehicle-agnostic automotive part representation.
 | attributes | JSONB | Structured attribute set (position, material, etc.) |
 | created_at | TIMESTAMP | |
 
+**Indexes:**
+- B-tree on `category` for category browsing
+- GIN on `attributes` for JSONB queries
+
+**Normalization:**
+- `name` and `brand` stored in title case, trimmed
+- `category` stored in lowercase, trimmed
+
 **Notes:**
 - Canonical parts are NOT vehicle-specific.
 - Fitment determines which vehicles each part applies to.
@@ -97,12 +105,14 @@ Raw or normalized part records from suppliers.
 | normalized_data | JSONB | Standardized attributes |
 | canonical_part_id | UUID FK → parts.id (nullable) |
 | cost | NUMERIC | Supplier cost |
-| availability | TEXT | “in_stock”, “backorder”, etc. |
+| availability | TEXT | "in_stock", "backorder", etc. |
 | lead_time_days | INT | |
 | created_at | TIMESTAMP | |
 
 **Indexes:**
 - `(supplier_id, supplier_sku)` unique
+- GIN on `raw_data`, `normalized_data`
+- B-tree on `canonical_part_id` (ON DELETE SET NULL)
 
 ---
 
@@ -119,10 +129,13 @@ Defines which vehicles a part fits and includes validation/confidence.
 | vehicle_id | UUID FK → vehicles.id |
 | confidence | FLOAT | 0.0–1.0 confidence score |
 | evidence | JSONB | Source evidence + agent reasoning |
-| source | TEXT | e.g., “supplier”, “database”, “AI-inferred” |
+| source | TEXT | e.g., "supplier", "database", "AI-inferred" |
 | created_at | TIMESTAMP | |
 
 **Notes:**
+- Unique on `(canonical_part_id, vehicle_id)`
+- Confidence check constraint: 0.0–1.0
+- Indexes: `(vehicle_id, confidence)`, `canonical_part_id`
 - Multiple fitment entries per part allowed.
 - Confidence regularly recalculated through workflows.
 
