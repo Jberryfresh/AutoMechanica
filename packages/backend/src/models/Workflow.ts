@@ -28,14 +28,18 @@ export class WorkflowValidationError extends Error {
 
 const ensureValidState = (state: string): WorkflowState => {
   const normalized = state.trim().toLowerCase();
-  if ((WORKFLOW_STATES as readonly string[]).includes(normalized)) return normalized as WorkflowState;
+  if ((WORKFLOW_STATES as readonly string[]).includes(normalized))
+    return normalized as WorkflowState;
   throw new WorkflowValidationError(`state must be one of: ${WORKFLOW_STATES.join(', ')}`);
 };
 
 const validateCreateInput = (input: CreateWorkflowInput): void => {
   if (!input.type?.trim()) throw new WorkflowValidationError('type is required');
   if (input.state) ensureValidState(input.state);
-  if (input.context !== undefined && (typeof input.context !== 'object' || Array.isArray(input.context))) {
+  if (
+    input.context !== undefined &&
+    (typeof input.context !== 'object' || Array.isArray(input.context))
+  ) {
     throw new WorkflowValidationError('context must be an object when provided');
   }
 };
@@ -78,7 +82,10 @@ export const createWorkflow = async (
   return mapWorkflowRow(result.rows[0]);
 };
 
-export const getWorkflowById = async (id: string, pool: Pool = getPool()): Promise<Workflow | null> => {
+export const getWorkflowById = async (
+  id: string,
+  pool: Pool = getPool()
+): Promise<Workflow | null> => {
   const result = await pool.query<WorkflowRow>(
     `
       SELECT id, type, state, context, created_at, updated_at
@@ -100,7 +107,10 @@ export const updateWorkflowState = async (
   const state = ensureValidState(newState);
   const patch = contextPatch ?? {};
 
-  if (contextPatch !== undefined && (typeof contextPatch !== 'object' || Array.isArray(contextPatch))) {
+  if (
+    contextPatch !== undefined &&
+    (typeof contextPatch !== 'object' || Array.isArray(contextPatch))
+  ) {
     throw new WorkflowValidationError('contextPatch must be an object when provided');
   }
 

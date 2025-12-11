@@ -31,10 +31,16 @@ export class AgentEventValidationError extends Error {
 const validateAgentEventInput = (input: AgentEventInput): void => {
   if (!input.agentName?.trim()) throw new AgentEventValidationError('agentName is required');
   if (!input.taskType?.trim()) throw new AgentEventValidationError('taskType is required');
-  if (input.inputData !== undefined && (typeof input.inputData !== 'object' || Array.isArray(input.inputData))) {
+  if (
+    input.inputData !== undefined &&
+    (typeof input.inputData !== 'object' || Array.isArray(input.inputData))
+  ) {
     throw new AgentEventValidationError('inputData must be an object when provided');
   }
-  if (input.outputData !== undefined && (typeof input.outputData !== 'object' || Array.isArray(input.outputData))) {
+  if (
+    input.outputData !== undefined &&
+    (typeof input.outputData !== 'object' || Array.isArray(input.outputData))
+  ) {
     throw new AgentEventValidationError('outputData must be an object when provided');
   }
 };
