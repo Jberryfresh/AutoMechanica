@@ -2522,7 +2522,7 @@ Implement `orders` and `order_lines` tables and models to support basic checkout
 
 #### 2.3.2 — Workflows & AgentEvents
 
-- [ ] 🔴 **P0-CRITICAL** — Implement workflow + agent event logging schema
+- [x] 🔴 **P0-CRITICAL** — Implement workflow + agent event logging schema
 
 **Description**  
 Create `workflows` and `agent_events` entities needed by the Orchestrator, agents, and memory system.
@@ -2554,8 +2554,8 @@ Create `workflows` and `agent_events` entities needed by the Orchestrator, agent
 
 **Acceptance Criteria**
 
-- Ability to create workflows and associated AgentEvents.
-- Reasoning text is stored reliably for embedding generation later.
+- [x] Ability to create workflows and associated AgentEvents.
+- [x] Reasoning text is stored reliably for embedding generation later.
 
 **Files**
 
@@ -3662,7 +3662,6 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
-
 
 
 
