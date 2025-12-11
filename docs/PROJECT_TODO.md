@@ -2468,7 +2468,7 @@ The relationship flow: `SupplierPart → (normalized) → Part → (fitment anal
 
 #### 2.3.1 — Orders & OrderLines
 
-- [ ] 🟡 **P1-HIGH** — Implement order schema
+- [x] 🟡 **P1-HIGH** — Implement order schema
 
 **Description**  
 Implement `orders` and `order_lines` tables and models to support basic checkout.
@@ -2500,8 +2500,8 @@ Implement `orders` and `order_lines` tables and models to support basic checkout
 
 **Acceptance Criteria**
 
-- Orders and order lines can be created and retrieved in tests.
-- Foreign keys enforce valid relationships.
+- [x] Orders and order lines can be created and retrieved in tests.
+- [x] Foreign keys enforce valid relationships.
 
 **Files**
 
@@ -3662,6 +3662,7 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
+
 
 
 
