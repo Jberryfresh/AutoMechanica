@@ -2137,19 +2137,19 @@ The combination of (year, make, model, trim, engine) must be unique to prevent d
 
 **Acceptance Criteria**
 
-- [ ] Migration creates `vehicles` table with correct schema
-- [ ] Composite unique constraint on `(year, make, model, trim, engine)` is enforced
-- [ ] Index on `(make, model, year)` exists for query performance
-- [ ] Attempting to insert duplicate vehicle produces database error
-- [ ] `createVehicle` function works and validates input
-- [ ] `findVehicleById` returns correct vehicle or null
-- [ ] `findVehicleByKey` returns vehicle matching all five attributes
-- [ ] `findOrCreateByKey` creates new vehicle when not exists
-- [ ] `findOrCreateByKey` returns existing vehicle when already exists
-- [ ] Make/model/trim are normalized to consistent format (title case, trimmed)
-- [ ] All model functions are strongly typed (TypeScript)
-- [ ] Unit tests cover CRUD operations and edge cases
-- [ ] Concurrent `findOrCreateByKey` calls don't create duplicates
+- [x] Migration creates `vehicles` table with correct schema
+- [x] Composite unique constraint on `(year, make, model, trim, engine)` is enforced
+- [x] Index on `(make, model, year)` exists for query performance
+- [x] Attempting to insert duplicate vehicle produces database error
+- [x] `createVehicle` function works and validates input
+- [x] `findVehicleById` returns correct vehicle or null
+- [x] `findVehicleByKey` returns vehicle matching all five attributes
+- [x] `findOrCreateByKey` creates new vehicle when not exists
+- [x] `findOrCreateByKey` returns existing vehicle when already exists
+- [x] Make/model/trim are normalized to consistent format (title case, trimmed)
+- [x] All model functions are strongly typed (TypeScript)
+- [x] Unit tests cover CRUD operations and edge cases
+- [x] Concurrent `findOrCreateByKey` calls don't create duplicates
 
 **Files Created/Modified**
 
@@ -2390,40 +2390,40 @@ The relationship flow: `SupplierPart → (normalized) → Part → (fitment anal
 **Acceptance Criteria**
 
 **Parts Table:**
-- [ ] Migration creates table with correct schema
-- [ ] Index on `category` exists
-- [ ] GIN index on `attributes` exists for JSON queries
-- [ ] Can create, read, update parts via model
-- [ ] List by category with pagination works
-- [ ] Search across name/brand works
-- [ ] Attributes validated per category
+- [x] Migration creates table with correct schema
+- [x] Index on `category` exists
+- [x] GIN index on `attributes` exists for JSON queries
+- [x] Can create, read, update parts via model
+- [x] List by category with pagination works
+- [x] Search across name/brand works
+- [x] Attributes validated per category
 
 **SupplierParts Table:**
-- [ ] Migration creates table with all columns
-- [ ] Unique constraint on `(supplier_id, supplier_sku)` enforced
-- [ ] Foreign key to parts with ON DELETE SET NULL works
-- [ ] Raw data preserved exactly as imported
-- [ ] Can update normalized_data independently
-- [ ] Can attach/detach canonical part link
-- [ ] List unmapped parts returns unprocessed records
+- [x] Migration creates table with all columns
+- [x] Unique constraint on `(supplier_id, supplier_sku)` enforced
+- [x] Foreign key to parts with ON DELETE SET NULL works
+- [x] Raw data preserved exactly as imported
+- [x] Can update normalized_data independently
+- [x] Can attach/detach canonical part link
+- [x] List unmapped parts returns unprocessed records
 
 **Fitments Table:**
-- [ ] Migration creates table with correct schema
-- [ ] Unique constraint on `(canonical_part_id, vehicle_id)` enforced
-- [ ] Foreign keys cascade delete appropriately
-- [ ] Confidence check constraint enforces 0-1 range
-- [ ] Composite index on `(vehicle_id, confidence)` exists
-- [ ] Can create fitment with evidence
-- [ ] Reverse fitment lookup returns all vehicles for part
-- [ ] Vehicle-aware query returns all parts for vehicle
-- [ ] Confidence filtering works
+- [x] Migration creates table with correct schema
+- [x] Unique constraint on `(canonical_part_id, vehicle_id)` enforced
+- [x] Foreign keys cascade delete appropriately
+- [x] Confidence check constraint enforces 0-1 range
+- [x] Composite index on `(vehicle_id, confidence)` exists
+- [x] Can create fitment with evidence
+- [x] Reverse fitment lookup returns all vehicles for part
+- [x] Vehicle-aware query returns all parts for vehicle
+- [x] Confidence filtering works
 
 **General:**
-- [ ] All models strongly typed in TypeScript
-- [ ] CRUD operations work for all three models
-- [ ] Foreign key relationships enforced
-- [ ] Comprehensive unit tests pass
-- [ ] Can link SupplierPart → Part → Fitment → Vehicle in tests
+- [x] All models strongly typed in TypeScript
+- [x] CRUD operations work for all three models
+- [x] Foreign key relationships enforced
+- [x] Comprehensive unit tests pass
+- [x] Can link SupplierPart → Part → Fitment → Vehicle in tests
 
 **Files Created/Modified**
 
@@ -3662,6 +3662,7 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
+
 
 
 
