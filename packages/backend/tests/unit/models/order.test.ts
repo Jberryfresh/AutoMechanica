@@ -8,6 +8,7 @@ import {
   createOrder,
   getOrderById,
   updateOrderStatus,
+  type OrderStatus,
 } from '../../../src/models/Order.js';
 import { OrderLineValidationError } from '../../../src/models/OrderLine.js';
 
@@ -214,5 +215,23 @@ describe('Order model', () => {
     await expect(createOrder({ userId: 'user-1', lines: [] }, pool)).rejects.toBeInstanceOf(
       OrderValidationError
     );
+  });
+
+  it('rejects unsupported order statuses', async () => {
+    const pool = createFakePool() as unknown as Pool;
+
+    await expect(
+      createOrder(
+        {
+          status: 'bogus' as unknown as OrderStatus,
+          lines: [{ canonicalPartId: 'part-1', quantity: 1, finalPrice: 10 }],
+        },
+        pool
+      )
+    ).rejects.toBeInstanceOf(OrderValidationError);
+
+    await expect(
+      updateOrderStatus('order-1', 'not-a-status' as unknown as OrderStatus, pool)
+    ).rejects.toBeInstanceOf(OrderValidationError);
   });
 });

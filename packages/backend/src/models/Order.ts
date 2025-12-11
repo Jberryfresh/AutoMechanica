@@ -10,10 +10,13 @@ import {
 
 import type { Pool } from 'pg';
 
+export const ORDER_STATUSES = ['pending', 'confirmed', 'fulfilled', 'cancelled'] as const;
+export type OrderStatus = (typeof ORDER_STATUSES)[number];
+
 export interface Order {
   id: string;
   userId: string | null;
-  status: string;
+  status: OrderStatus;
   totalAmount: number;
   shippingAddress: Record<string, unknown> | null;
   createdAt: Date;
@@ -23,7 +26,7 @@ export interface Order {
 
 export interface CreateOrderInput {
   userId?: string | null;
-  status?: string;
+  status?: OrderStatus;
   shippingAddress?: Record<string, unknown> | null;
   lines: Array<OrderLineInput>;
 }
@@ -49,16 +52,23 @@ const validateShippingAddress = (address: Record<string, unknown> | null | undef
   }
 };
 
+const ensureValidStatus = (status: string): OrderStatus => {
+  const normalized = status.trim().toLowerCase();
+  if ((ORDER_STATUSES as readonly string[]).includes(normalized)) return normalized as OrderStatus;
+  throw new OrderValidationError(`status must be one of: ${ORDER_STATUSES.join(', ')}`);
+};
+
 const validateCreateOrderInput = (input: CreateOrderInput): void => {
   if (!input.lines?.length) throw new OrderValidationError('at least one line item is required');
   validateShippingAddress(input.shippingAddress ?? null);
+  if (input.status) ensureValidStatus(input.status);
   for (const line of input.lines) validateOrderLineInput(line);
 };
 
 interface OrderRow {
   id: string;
   user_id: string | null;
-  status: string;
+  status: OrderStatus;
   total_amount: string;
   shipping_address: Record<string, unknown> | null;
   created_at: string | Date;
@@ -82,7 +92,7 @@ export const createOrder = async (
   validateCreateOrderInput(input);
 
   const totalAmount = input.lines.reduce((sum, line) => sum + line.finalPrice * line.quantity, 0);
-  const status = input.status?.trim() || 'pending';
+  const status = ensureValidStatus(input.status ?? 'pending');
 
   const client =
     typeof (pool as unknown as { connect?: () => unknown }).connect === 'function'
@@ -152,6 +162,7 @@ export const updateOrderStatus = async (
   pool: Pool = getPool()
 ): Promise<Order> => {
   if (!status?.trim()) throw new OrderValidationError('status is required');
+  const normalized = ensureValidStatus(status);
 
   const result = await pool.query<OrderRow>(
     `
@@ -160,7 +171,7 @@ export const updateOrderStatus = async (
       WHERE id = $2
       RETURNING id, user_id, status, total_amount, shipping_address, created_at, updated_at
     `,
-    [status.trim(), id]
+    [normalized, id]
   );
 
   const row = result.rows[0];
