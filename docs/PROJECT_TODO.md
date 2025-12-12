@@ -1577,6 +1577,7 @@ Create `/docs/DATABASE_MANAGEMENT.md` (new file):
 7. Reset database: `npm run db:reset`
 8. Verify data is cleared
 
+
 **Acceptance Criteria**
 
 - [x] `/docker-compose.yml` exists with PostgreSQL and pgAdmin services
@@ -2006,7 +2007,7 @@ The pgvector extension must be enabled before any vector columns can be created.
 
 #### 2.2.1 — Vehicles table & model
 
-- [ ] 🔴 **P0-CRITICAL** — Implement `vehicles` schema
+- [x] 🔴 **P0-CRITICAL** — Implement `vehicles` schema
 
 **Description**  
 Create the Vehicle table and model exactly as described in `DOMAIN_MODEL.md`.
@@ -2136,19 +2137,19 @@ The combination of (year, make, model, trim, engine) must be unique to prevent d
 
 **Acceptance Criteria**
 
-- [ ] Migration creates `vehicles` table with correct schema
-- [ ] Composite unique constraint on `(year, make, model, trim, engine)` is enforced
-- [ ] Index on `(make, model, year)` exists for query performance
-- [ ] Attempting to insert duplicate vehicle produces database error
-- [ ] `createVehicle` function works and validates input
-- [ ] `findVehicleById` returns correct vehicle or null
-- [ ] `findVehicleByKey` returns vehicle matching all five attributes
-- [ ] `findOrCreateByKey` creates new vehicle when not exists
-- [ ] `findOrCreateByKey` returns existing vehicle when already exists
-- [ ] Make/model/trim are normalized to consistent format (title case, trimmed)
-- [ ] All model functions are strongly typed (TypeScript)
-- [ ] Unit tests cover CRUD operations and edge cases
-- [ ] Concurrent `findOrCreateByKey` calls don't create duplicates
+- [x] Migration creates `vehicles` table with correct schema
+- [x] Composite unique constraint on `(year, make, model, trim, engine)` is enforced
+- [x] Index on `(make, model, year)` exists for query performance
+- [x] Attempting to insert duplicate vehicle produces database error
+- [x] `createVehicle` function works and validates input
+- [x] `findVehicleById` returns correct vehicle or null
+- [x] `findVehicleByKey` returns vehicle matching all five attributes
+- [x] `findOrCreateByKey` creates new vehicle when not exists
+- [x] `findOrCreateByKey` returns existing vehicle when already exists
+- [x] Make/model/trim are normalized to consistent format (title case, trimmed)
+- [x] All model functions are strongly typed (TypeScript)
+- [x] Unit tests cover CRUD operations and edge cases
+- [x] Concurrent `findOrCreateByKey` calls don't create duplicates
 
 **Files Created/Modified**
 
@@ -2181,7 +2182,7 @@ The combination of (year, make, model, trim, engine) must be unique to prevent d
 
 #### 2.2.2 — Parts, SupplierParts, Fitments tables & models
 
-- [ ] 🔴 **P0-CRITICAL** — Implement core part-related tables
+- [x] 🔴 **P0-CRITICAL** — Implement core part-related tables
 
 **Description**  
 Implement the core entities for canonical parts, supplier parts, and fitment relationships.
@@ -2389,40 +2390,40 @@ The relationship flow: `SupplierPart → (normalized) → Part → (fitment anal
 **Acceptance Criteria**
 
 **Parts Table:**
-- [ ] Migration creates table with correct schema
-- [ ] Index on `category` exists
-- [ ] GIN index on `attributes` exists for JSON queries
-- [ ] Can create, read, update parts via model
-- [ ] List by category with pagination works
-- [ ] Search across name/brand works
-- [ ] Attributes validated per category
+- [x] Migration creates table with correct schema
+- [x] Index on `category` exists
+- [x] GIN index on `attributes` exists for JSON queries
+- [x] Can create, read, update parts via model
+- [x] List by category with pagination works
+- [x] Search across name/brand works
+- [x] Attributes validated per category
 
 **SupplierParts Table:**
-- [ ] Migration creates table with all columns
-- [ ] Unique constraint on `(supplier_id, supplier_sku)` enforced
-- [ ] Foreign key to parts with ON DELETE SET NULL works
-- [ ] Raw data preserved exactly as imported
-- [ ] Can update normalized_data independently
-- [ ] Can attach/detach canonical part link
-- [ ] List unmapped parts returns unprocessed records
+- [x] Migration creates table with all columns
+- [x] Unique constraint on `(supplier_id, supplier_sku)` enforced
+- [x] Foreign key to parts with ON DELETE SET NULL works
+- [x] Raw data preserved exactly as imported
+- [x] Can update normalized_data independently
+- [x] Can attach/detach canonical part link
+- [x] List unmapped parts returns unprocessed records
 
 **Fitments Table:**
-- [ ] Migration creates table with correct schema
-- [ ] Unique constraint on `(canonical_part_id, vehicle_id)` enforced
-- [ ] Foreign keys cascade delete appropriately
-- [ ] Confidence check constraint enforces 0-1 range
-- [ ] Composite index on `(vehicle_id, confidence)` exists
-- [ ] Can create fitment with evidence
-- [ ] Reverse fitment lookup returns all vehicles for part
-- [ ] Vehicle-aware query returns all parts for vehicle
-- [ ] Confidence filtering works
+- [x] Migration creates table with correct schema
+- [x] Unique constraint on `(canonical_part_id, vehicle_id)` enforced
+- [x] Foreign keys cascade delete appropriately
+- [x] Confidence check constraint enforces 0-1 range
+- [x] Composite index on `(vehicle_id, confidence)` exists
+- [x] Can create fitment with evidence
+- [x] Reverse fitment lookup returns all vehicles for part
+- [x] Vehicle-aware query returns all parts for vehicle
+- [x] Confidence filtering works
 
 **General:**
-- [ ] All models strongly typed in TypeScript
-- [ ] CRUD operations work for all three models
-- [ ] Foreign key relationships enforced
-- [ ] Comprehensive unit tests pass
-- [ ] Can link SupplierPart → Part → Fitment → Vehicle in tests
+- [x] All models strongly typed in TypeScript
+- [x] CRUD operations work for all three models
+- [x] Foreign key relationships enforced
+- [x] Comprehensive unit tests pass
+- [x] Can link SupplierPart → Part → Fitment → Vehicle in tests
 
 **Files Created/Modified**
 
@@ -2467,7 +2468,7 @@ The relationship flow: `SupplierPart → (normalized) → Part → (fitment anal
 
 #### 2.3.1 — Orders & OrderLines
 
-- [ ] 🟡 **P1-HIGH** — Implement order schema
+- [x] 🟡 **P1-HIGH** — Implement order schema
 
 **Description**  
 Implement `orders` and `order_lines` tables and models to support basic checkout.
@@ -2499,8 +2500,8 @@ Implement `orders` and `order_lines` tables and models to support basic checkout
 
 **Acceptance Criteria**
 
-- Orders and order lines can be created and retrieved in tests.
-- Foreign keys enforce valid relationships.
+- [x] Orders and order lines can be created and retrieved in tests.
+- [x] Foreign keys enforce valid relationships.
 
 **Files**
 
@@ -2521,7 +2522,7 @@ Implement `orders` and `order_lines` tables and models to support basic checkout
 
 #### 2.3.2 — Workflows & AgentEvents
 
-- [ ] 🔴 **P0-CRITICAL** — Implement workflow + agent event logging schema
+- [x] 🔴 **P0-CRITICAL** — Implement workflow + agent event logging schema
 
 **Description**  
 Create `workflows` and `agent_events` entities needed by the Orchestrator, agents, and memory system.
@@ -2553,8 +2554,8 @@ Create `workflows` and `agent_events` entities needed by the Orchestrator, agent
 
 **Acceptance Criteria**
 
-- Ability to create workflows and associated AgentEvents.
-- Reasoning text is stored reliably for embedding generation later.
+- [x] Ability to create workflows and associated AgentEvents.
+- [x] Reasoning text is stored reliably for embedding generation later.
 
 **Files**
 
@@ -3661,4 +3662,7 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
+
+
+
 
