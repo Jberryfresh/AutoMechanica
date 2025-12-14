@@ -2690,9 +2690,9 @@ Implement a generic worker loop that different agent worker processes can reuse 
 
 ### 3.2 — Orchestrator MVP
 
-#### 3.2.1 — Orchestrator module & workflow registry
+#### 3.2.1 - Orchestrator module & workflow registry
 
-- [ ] 🔴 **P0-CRITICAL** — Implement orchestrator core
+- [x] 🔴 **P0-CRITICAL** - Implement orchestrator core
 
 **Description**  
 Implement an Orchestrator service that owns workflow creation, state transitions, and task emission.
@@ -3662,6 +3662,5 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
-
 
 
