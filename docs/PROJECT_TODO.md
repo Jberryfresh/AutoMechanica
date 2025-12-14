@@ -2738,7 +2738,7 @@ Implement an Orchestrator service that owns workflow creation, state transitions
 
 #### 3.3.1 — Router core + provider adapters
 
-- [ ] 🔴 **P0-CRITICAL** — Implement LLM Router skeleton
+- [x] 🔴 **P0-CRITICAL** — Implement LLM Router skeleton
 
 **Description**  
 Implement the provider-agnostic LLM Router described in `LLM_ROUTER_SPEC.md`, with clear TaskType-based routing and mockable providers.
@@ -3662,5 +3662,4 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
-
 
