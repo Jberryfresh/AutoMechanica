@@ -2618,7 +2618,7 @@ Implement the `tasks` table and leasing/backoff mechanism exactly as specified i
 **Acceptance Criteria**
 
 - Tasks can be enqueued, leased by workers, completed, retried, and moved to `dead` after exceeding max attempts.
-- Only one worker gets a lease on a given task at a time.
+- [x] Only one worker gets a lease on a given task at a time.
 
 **Files**
 
@@ -3662,6 +3662,7 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
+
 
 
 
