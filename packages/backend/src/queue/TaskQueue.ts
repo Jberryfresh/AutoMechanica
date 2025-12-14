@@ -45,6 +45,11 @@ export interface LeaseOptions {
   now?: Date;
 }
 
+export interface ExtendLeaseOptions {
+  extendMs?: number;
+  now?: Date;
+}
+
 const BASE_BACKOFF_MS = 5_000;
 
 export class TaskValidationError extends Error {
@@ -166,6 +171,33 @@ export const leaseNextTask = async (
       RETURNING *
     `,
     [workerId.trim(), leaseExpires, now]
+  );
+
+  return result.rows[0] ? mapRow(result.rows[0]) : null;
+};
+
+export const extendTaskLease = async (
+  id: string,
+  workerId: string,
+  options: ExtendLeaseOptions = {},
+  pool: Pool = getPool()
+): Promise<QueuedTask | null> => {
+  if (!workerId?.trim()) throw new TaskValidationError('workerId is required');
+  const extendMs = options.extendMs && options.extendMs > 0 ? options.extendMs : 30_000;
+  const now = options.now ?? new Date();
+  const leaseExpires = new Date(now.getTime() + extendMs);
+
+  const result = await pool.query<TaskRow>(
+    `
+      UPDATE tasks
+      SET lease_expires_at = $3,
+          updated_at = now()
+      WHERE id = $1
+        AND lease_owner = $2
+        AND status IN ('leased', 'running')
+      RETURNING *
+    `,
+    [id, workerId.trim(), leaseExpires]
   );
 
   return result.rows[0] ? mapRow(result.rows[0]) : null;

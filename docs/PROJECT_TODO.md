@@ -2584,7 +2584,7 @@ Create `workflows` and `agent_events` entities needed by the Orchestrator, agent
 
 #### 3.1.1 — `tasks` table & leasing logic
 
-- [ ] 🔴 **P0-CRITICAL** — Implement queue schema and leasing
+- [x] 🔴 **P0-CRITICAL** — Implement queue schema and leasing
 
 **Description**  
 Implement the `tasks` table and leasing/backoff mechanism exactly as specified in `TASK_QUEUE_SPEC.md`.
@@ -2641,9 +2641,9 @@ Implement the `tasks` table and leasing/backoff mechanism exactly as specified i
 
 ---
 
-#### 3.1.2 — Worker loop abstraction
+#### 3.1.2 - Worker loop abstraction
 
-- [ ] 🔴 **P0-CRITICAL** — Build worker framework
+- [x] 🔴 **P0-CRITICAL** — Build worker framework
 
 **Description**  
 Implement a generic worker loop that different agent worker processes can reuse to process tasks.
@@ -3662,8 +3662,6 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
-
-
 
 
 

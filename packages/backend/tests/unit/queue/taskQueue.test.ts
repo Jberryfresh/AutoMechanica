@@ -1,18 +1,18 @@
-/* eslint-disable import/order */
 import { randomUUID } from 'node:crypto';
 
 import { describe, expect, it } from 'vitest';
 
 import {
   enqueueTask,
+  extendTaskLease,
   leaseNextTask,
   markTaskCompleted,
   markTaskFailed,
   markTaskRunning,
   requeueWithBackoff,
-  type QueuedTask,
 } from '../../../src/queue/TaskQueue.js';
 
+import type { QueuedTask } from '../../../src/queue/TaskQueue.js';
 import type { Pool } from 'pg';
 
 interface FakeQueryResult<T = unknown> {
@@ -111,6 +111,20 @@ const createFakePool = (initial: QueuedTask[] = []): FakePool => {
         const t = store.find((x) => x.id === id);
         if (!t) return { rows: [] };
         t.status = 'running';
+        t.updatedAt = new Date();
+        return { rows: [toRow(t)] };
+      }
+
+      if (text.includes('lease_expires_at = $3') && text.includes('lease_owner = $2')) {
+        const [id, workerId, leaseExpiresAt] = params as [string, string, Date];
+        const t = store.find(
+          (x) =>
+            x.id === id &&
+            x.leaseOwner === workerId &&
+            (x.status === 'leased' || x.status === 'running')
+        );
+        if (!t) return { rows: [] };
+        t.leaseExpiresAt = leaseExpiresAt;
         t.updatedAt = new Date();
         return { rows: [toRow(t)] };
       }
@@ -228,6 +242,23 @@ describe('TaskQueue', () => {
 
     const failedTwice = await markTaskFailed(task.id, { msg: 'boom2' }, pool);
     expect(failedTwice?.status).toBe('dead');
+  });
+
+  it('extends an active lease for the owning worker only', async () => {
+    const pool = createFakePool() as unknown as Pool;
+    const now = new Date();
+    const leaseMs = 1_000;
+    const task = await enqueueTask({ agentName: 'A', taskType: 't1' }, pool);
+
+    const leased = await leaseNextTask('worker-1', { now, leaseMs }, pool);
+    expect(leased?.leaseOwner).toBe('worker-1');
+
+    const originalExpiry = leased?.leaseExpiresAt?.getTime() ?? 0;
+    const extended = await extendTaskLease(task.id, 'worker-1', { extendMs: 2_000, now }, pool);
+    expect(extended?.leaseExpiresAt?.getTime()).toBeGreaterThan(originalExpiry);
+
+    const wrongOwner = await extendTaskLease(task.id, 'worker-2', { extendMs: 3_000, now }, pool);
+    expect(wrongOwner).toBeNull();
   });
 
   it('requeues with backoff helper', async () => {
