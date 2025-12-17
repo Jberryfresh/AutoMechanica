@@ -3279,9 +3279,9 @@ Show complete part details, fitment confidence for active vehicle, and full “F
 
 ### 5.3 — Support Agent Integration
 
-#### 5.3.1 — SupportChatEntry and backend `/support/message` wiring
+#### 5.3.1 - SupportChatEntry and backend `/support/message` wiring
 
-- [ ] 🟡 **P1-HIGH** — Implement basic support chat entry point
+- [x] 🟡 **P1-HIGH** - Implement basic support chat entry point
 
 **Description**  
 Integrate the Support Agent as a simple chat-style interaction from product and checkout pages.
