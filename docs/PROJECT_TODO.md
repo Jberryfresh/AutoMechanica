@@ -3173,9 +3173,9 @@ Allow users to choose and manage their active vehicle, which drives all browsing
 
 ### 5.2 — Product List & Detail Pages
 
-#### 5.2.1 — Vehicle-aware category page
+#### 5.2.1 - Vehicle-aware category page
 
-- [ ] 🔴 **P0-CRITICAL** — Implement vehicle-aware category browse
+- [x] 🔴 **P0-CRITICAL** - Implement vehicle-aware category browse
 
 **Description**  
 Allow users to browse parts categories, filtered for their active vehicle when available.
@@ -3224,9 +3224,9 @@ Allow users to browse parts categories, filtered for their active vehicle when a
 
 ---
 
-#### 5.2.2 — ProductDetail with FitmentBadge & reverse fitment table
+#### 5.2.2 - ProductDetail with FitmentBadge & reverse fitment table
 
-- [ ] 🔴 **P0-CRITICAL** — Implement product detail UX
+- [x] 🔴 **P0-CRITICAL** - Implement product detail UX
 
 **Description**  
 Show complete part details, fitment confidence for active vehicle, and full “Fits these vehicles” reverse fitment list.
