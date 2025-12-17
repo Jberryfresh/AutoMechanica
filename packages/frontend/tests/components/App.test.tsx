@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 
 import App from '@/App';
+import { GarageProvider } from '@/lib/garage-context';
 
 const renderApp = (): void => {
   const queryClient = new QueryClient();
@@ -11,7 +12,9 @@ const renderApp = (): void => {
   render(
     <MemoryRouter>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <GarageProvider>
+          <App />
+        </GarageProvider>
       </QueryClientProvider>
     </MemoryRouter>
   );

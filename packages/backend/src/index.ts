@@ -4,7 +4,9 @@ import express, { type NextFunction, type Request, type Response } from 'express
 import helmet from 'helmet';
 import morgan from 'morgan';
 
+import garageRouter from './api/garage.js';
 import healthRouter from './api/health.js';
+import vehiclesRouter from './api/vehicles.js';
 import { closePool, initializeDatabase } from './db/client.js';
 import { env } from './lib/env.js';
 
@@ -42,6 +44,8 @@ app.get('/api', (_req, res) => {
   });
 });
 app.use('/api', healthRouter);
+app.use('/api', vehiclesRouter);
+app.use('/api', garageRouter);
 
 app.use((req, res) => {
   res.status(404).json({
