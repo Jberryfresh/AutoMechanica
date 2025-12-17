@@ -3017,7 +3017,7 @@ Generate product descriptions in line with `BRAND_GUIDE.md` and `VOICE_TONE_GUID
 
 #### 4.2.1 — `wf_ingest_supplier_catalog`
 
-- [ ] 🔴 **P0-CRITICAL** — Implement supplier ingestion workflow
+ - [x] 🔴 **P0-CRITICAL** — Implement supplier ingestion workflow
 
 **Description**  
 Orchestrate End-to-End ingestion from raw supplier feed → normalized → canonical parts → fitment → pricing → SEO content.
@@ -3071,7 +3071,7 @@ Orchestrate End-to-End ingestion from raw supplier feed → normalized → canon
 
 #### 4.2.2 — `wf_publish_new_part`
 
-- [ ] 🟡 **P1-HIGH** — Implement part publication workflow
+ - [x] 🟡 **P1-HIGH** — Implement part publication workflow
 
 **Description**  
 Finalize a new canonical Part by running Fitment, Pricing, and SEO as a cohesive workflow.

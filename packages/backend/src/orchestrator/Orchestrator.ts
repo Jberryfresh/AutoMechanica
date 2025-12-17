@@ -127,10 +127,17 @@ export const handleTaskResult = async (
     return { workflow: completed, nextTasks: [] };
   }
 
-  if (decision.action === 'enqueue' && decision.tasks?.length) {
-    const nextTasks = await Promise.all(
-      decision.tasks.map((t) => scheduleTask(t, workflow.id, enqueue, pool))
-    );
+  if (decision.action === 'enqueue') {
+    const nextTasks = decision.tasks?.length
+      ? await Promise.all(
+          decision.tasks.map((t) => scheduleTask(t, workflow.id, enqueue, pool))
+        )
+      : [];
+
+    if (decision.contextPatch) {
+      await updateState(workflow.id, workflow.state, decision.contextPatch, pool);
+    }
+
     return { workflow, nextTasks };
   }
 
