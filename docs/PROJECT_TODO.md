@@ -2794,7 +2794,7 @@ Implement the provider-agnostic LLM Router described in `LLM_ROUTER_SPEC.md`, wi
 
 #### 4.1.1 — Supplier Normalization Agent
 
-- [ ] 🔴 **P0-CRITICAL** — Implement SupplierNormalizationAgent
+- [x] 🔴 **P0-CRITICAL** — Implement SupplierNormalizationAgent
 
 **Description**  
 Implement an agent that takes raw supplier part data and normalizes it into standardized fields.
@@ -2840,7 +2840,7 @@ Implement an agent that takes raw supplier part data and normalizes it into stan
 
 #### 4.1.2 — Product Data Agent
 
-- [ ] 🔴 **P0-CRITICAL** — Implement ProductDataAgent
+- [x] 🔴 **P0-CRITICAL** — Implement ProductDataAgent
 
 **Description**  
 Match normalized SupplierParts to canonical Parts and create new canonical Parts when no good match exists.
@@ -2884,7 +2884,7 @@ Match normalized SupplierParts to canonical Parts and create new canonical Parts
 
 #### 4.1.3 — Fitment Agent (MVP)
 
-- [ ] 🔴 **P0-CRITICAL** — Implement FitmentAgent core
+- [x] 🔴 **P0-CRITICAL** — Implement FitmentAgent core
 
 **Description**  
 Implement the initial fitment logic to map canonical Parts to Vehicles with a confidence score and evidence.
@@ -2929,7 +2929,7 @@ Implement the initial fitment logic to map canonical Parts to Vehicles with a co
 
 #### 4.1.4 — Pricing Agent (MVP)
 
-- [ ] 🟡 **P1-HIGH** — Implement PricingAgent
+- [x] 🟡 **P1-HIGH** — Implement PricingAgent
 
 **Description**  
 Implement initial PricingAgent logic that computes final prices using supplier costs and simple margin rules.
@@ -2971,7 +2971,7 @@ Implement initial PricingAgent logic that computes final prices using supplier c
 
 #### 4.1.5 — SEO/Content Agent (MVP)
 
-- [ ] 🟡 **P1-HIGH** — Implement SEOAgent
+- [x] 🟡 **P1-HIGH** — Implement SEOAgent
 
 **Description**  
 Generate product descriptions in line with `BRAND_GUIDE.md` and `VOICE_TONE_GUIDE.md`.
@@ -3662,4 +3662,3 @@ At that point, AutoMechanica is a functioning, production-ready, end-to-end, AI-
 ---
 
 # End of PROJECT_TODO.md
-
