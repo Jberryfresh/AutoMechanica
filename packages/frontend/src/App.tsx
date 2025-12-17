@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { frontendConfig } from '@/lib/config';
+import VehiclePicker from './components/VehiclePicker';
 
 const App: FC = () => {
   return (
@@ -63,6 +64,9 @@ const App: FC = () => {
                 </div>
               </div>
             </div>
+          </section>
+          <section id="garage" className="card">
+            <VehiclePicker />
           </section>
         </main>
         <Footer />

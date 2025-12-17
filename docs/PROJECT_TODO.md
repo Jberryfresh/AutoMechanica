@@ -3121,9 +3121,9 @@ Finalize a new canonical Part by running Fitment, Pricing, and SEO as a cohesive
 
 ### 5.1 — Vehicle Picker & Garage
 
-#### 5.1.1 — VehiclePicker + GarageDropdown components
+#### 5.1.1 - VehiclePicker + GarageDropdown components
 
-- [ ] 🔴 **P0-CRITICAL** — Implement core vehicle selection UX
+- [x] 🔴 **P0-CRITICAL** - Implement core vehicle selection UX
 
 **Description**  
 Allow users to choose and manage their active vehicle, which drives all browsing and fitment contexts.

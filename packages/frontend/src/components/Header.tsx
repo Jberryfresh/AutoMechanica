@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 
+import GarageDropdown from '@/components/GarageDropdown';
 import { frontendConfig } from '@/lib/config';
 
 const Header: FC = () => (
@@ -27,6 +28,9 @@ const Header: FC = () => (
         Support
       </Link>
     </nav>
+    <div className="ml-4">
+      <GarageDropdown />
+    </div>
   </header>
 );
 
