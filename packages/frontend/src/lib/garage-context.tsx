@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 
+import { frontendConfig } from './config';
 import { formatVehicleLabel, type VehicleSpec } from './vehicleData';
 
 export interface GarageState {
@@ -62,12 +63,53 @@ const isSameVehicle = (a: VehicleSpec, b: VehicleSpec): boolean =>
   a.trim === b.trim &&
   a.engine === b.engine;
 
+const normalizeGarage = (state: GarageState | null | undefined): GarageState => ({
+  activeVehicle: state?.activeVehicle ?? null,
+  savedVehicles: state?.savedVehicles ?? [],
+});
+
+const fetchGarageFromApi = async (): Promise<GarageState | null> => {
+  if (import.meta.env.MODE === 'test') return null;
+  try {
+    const res = await fetch(`${frontendConfig.apiBaseUrl}/api/garage`);
+    if (!res.ok) return null;
+    const payload = (await res.json()) as GarageState;
+    return normalizeGarage(payload);
+  } catch {
+    return null;
+  }
+};
+
+const saveGarageToApi = async (state: GarageState): Promise<void> => {
+  if (import.meta.env.MODE === 'test') return;
+  try {
+    await fetch(`${frontendConfig.apiBaseUrl}/api/garage`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state),
+    });
+  } catch {
+    // swallow sync errors for graceful degradation
+  }
+};
+
 export const GarageProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [garage, setGarage] = useState<GarageState>(() => loadGarage());
 
   useEffect(() => {
     persistGarage(garage);
+    void saveGarageToApi(garage);
   }, [garage]);
+
+  useEffect(() => {
+    void (async () => {
+      const remoteGarage = await fetchGarageFromApi();
+      if (remoteGarage) {
+        setGarage(remoteGarage);
+        persistGarage(remoteGarage);
+      }
+    })();
+  }, []);
 
   const setActiveVehicle = useCallback((vehicle: VehicleSpec) => {
     setGarage((current) => {
