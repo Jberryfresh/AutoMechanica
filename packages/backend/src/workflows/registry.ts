@@ -1,3 +1,6 @@
+import { ingestSupplierCatalogConfig } from './wf_ingest_supplier_catalog.js';
+import { publishNewPartConfig } from './wf_publish_new_part.js';
+
 import type { Workflow } from '../models/Workflow.js';
 import type { QueuedTask } from '../queue/TaskQueue.js';
 
@@ -17,6 +20,7 @@ export interface WorkflowDecisionComplete {
 export interface WorkflowDecisionEnqueue {
   action: 'enqueue';
   tasks: WorkflowTaskSpec[];
+  contextPatch?: Record<string, unknown>;
 }
 
 export type WorkflowDecision = WorkflowDecisionComplete | WorkflowDecisionEnqueue | 'complete';
@@ -44,6 +48,8 @@ export const WORKFLOW_REGISTRY: Record<string, WorkflowConfig> = {
     ],
     onTaskComplete: () => ({ action: 'complete' }),
   },
+  [ingestSupplierCatalogConfig.type]: ingestSupplierCatalogConfig,
+  [publishNewPartConfig.type]: publishNewPartConfig,
 };
 
 export const getWorkflowConfig = (type: string): WorkflowConfig | undefined =>
