@@ -1,5 +1,5 @@
 import { Router, type NextFunction, type Request, type Response } from 'express';
-import rateLimit from 'express-rate-limit';
+import { ipKeyGenerator, rateLimit } from 'express-rate-limit';
 
 import { getPool } from '../db/client.js';
 import { env } from '../lib/env.js';
@@ -9,12 +9,18 @@ import type { Pool } from 'pg';
 
 const router = Router();
 
-// Add rate limiter: max 100 requests per 15 minutes per IP (configurable)
 const adminRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: (req) => {
+    const adminHeader = Array.isArray(req.headers['x-admin-key'])
+      ? req.headers['x-admin-key'][0]
+      : req.headers['x-admin-key'];
+    const clientIp = req.ip ?? 'unknown';
+    return `${ipKeyGenerator(clientIp)}:${adminHeader ?? 'none'}`;
+  },
 });
 
 // Apply the rate limiter to all admin routes
@@ -23,7 +29,8 @@ router.use(adminRateLimiter);
 type AdminHandler = (req: Request, res: Response, next: NextFunction, pool: Pool) => Promise<void>;
 
 const withAdminGuard =
-  (handler: AdminHandler) => (req: Request, res: Response, next: NextFunction): void => {
+  (handler: AdminHandler) =>
+  (req: Request, res: Response, next: NextFunction): void => {
     if (env.ADMIN_API_KEY && req.headers['x-admin-key'] !== env.ADMIN_API_KEY) {
       res.status(401).json({ error: 'Unauthorized' });
       return;
