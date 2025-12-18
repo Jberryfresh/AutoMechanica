@@ -3435,7 +3435,7 @@ Provide admin-only APIs to inspect workflows and tasks as defined in `API_REFERE
 
 #### 6.3.1 — Basic CI pipeline
 
-- [ ] 🟡 **P1-HIGH** — Setup CI for tests and lint
+- [x] 🟡 **P1-HIGH** — Setup CI for tests and lint
 
 **Description**  
 Add CI configuration so that pushes/PRs automatically run tests and lint for backend and frontend.
