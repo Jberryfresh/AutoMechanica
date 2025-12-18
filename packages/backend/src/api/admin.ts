@@ -1,4 +1,5 @@
 import { Router, type NextFunction, type Request, type Response } from 'express';
+import rateLimit from 'express-rate-limit';
 
 import { getPool } from '../db/client.js';
 import { env } from '../lib/env.js';
@@ -7,6 +8,17 @@ import { getWorkflowById, updateWorkflowState } from '../models/Workflow.js';
 import type { Pool } from 'pg';
 
 const router = Router();
+
+// Add rate limiter: max 100 requests per 15 minutes per IP (configurable)
+const adminRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply the rate limiter to all admin routes
+router.use(adminRateLimiter);
 
 type AdminHandler = (req: Request, res: Response, next: NextFunction, pool: Pool) => Promise<void>;
 
