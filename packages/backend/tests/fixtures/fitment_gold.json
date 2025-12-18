@@ -1,0 +1,38 @@
+[
+  {
+    "scenario": "Matching engine and position",
+    "part": {
+      "id": "part-1",
+      "attributes": { "engine": "2.5L I4", "position": "Front" }
+    },
+    "vehicle": { "id": "veh-1", "year": 2020, "make": "Toyota", "model": "Camry", "engine": "2.5L I4", "position": "Front" },
+    "expected_fit": true
+  },
+  {
+    "scenario": "Wrong position",
+    "part": {
+      "id": "part-1",
+      "attributes": { "engine": "2.5L I4", "position": "Front" }
+    },
+    "vehicle": { "id": "veh-2", "year": 2020, "make": "Toyota", "model": "Camry", "engine": "2.5L I4", "position": "Rear" },
+    "expected_fit": false
+  },
+  {
+    "scenario": "Wrong engine",
+    "part": {
+      "id": "part-2",
+      "attributes": { "engine": "3.5L V6", "position": "Front" }
+    },
+    "vehicle": { "id": "veh-3", "year": 2020, "make": "Toyota", "model": "Camry", "engine": "2.5L I4", "position": "Front" },
+    "expected_fit": false
+  },
+  {
+    "scenario": "Position only match",
+    "part": {
+      "id": "part-3",
+      "attributes": { "position": "Front" }
+    },
+    "vehicle": { "id": "veh-4", "year": 2022, "make": "Honda", "model": "Civic", "engine": "2.0L I4", "position": "Front" },
+    "expected_fit": true
+  }
+]
