@@ -3340,7 +3340,7 @@ Integrate the Support Agent as a simple chat-style interaction from product and 
 
 #### 6.1.1 — Fitment gold dataset harness
 
-- [ ] 🟡 **P1-HIGH** — Implement fitment evaluation harness
+- [x] 🟡 **P1-HIGH** — Implement fitment evaluation harness
 
 **Description**  
 Create a test harness that uses a small gold dataset to evaluate FitmentAgent accuracy.
