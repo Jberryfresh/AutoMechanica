@@ -3386,7 +3386,7 @@ Create a test harness that uses a small gold dataset to evaluate FitmentAgent ac
 
 #### 6.2.1 — Admin endpoints for workflows & tasks
 
-- [ ] 🟢 **P2-MEDIUM** — Implement admin monitoring API
+- [x] 🟢 **P2-MEDIUM** — Implement admin monitoring API
 
 **Description**  
 Provide admin-only APIs to inspect workflows and tasks as defined in `API_REFERENCE.md`.
