@@ -5,6 +5,7 @@ import type { FC } from 'react';
 import FitmentBadge from '@/components/FitmentBadge';
 import ReverseFitmentTable from '@/components/ReverseFitmentTable';
 import SpecsTable from '@/components/SpecsTable';
+import SupportChatEntry from '@/components/SupportChatEntry';
 import { useGarage } from '@/lib/garage-context';
 import { fetchPartById } from '@/lib/parts-api';
 import type { VehicleSpec } from '@/lib/vehicleData';
@@ -61,6 +62,7 @@ const PartDetailPage: FC = () => {
         <div className="space-y-3">
           <h3 className="text-lg font-semibold text-electric-teal-50">Specifications</h3>
           <SpecsTable attributes={part.attributes} />
+          <SupportChatEntry partId={part.id} />
         </div>
         <div className="space-y-3">
           <h3 className="text-lg font-semibold text-electric-teal-50">Fits these vehicles</h3>

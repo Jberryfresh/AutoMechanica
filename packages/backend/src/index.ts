@@ -6,6 +6,7 @@ import morgan from 'morgan';
 
 import garageRouter from './api/garage.js';
 import healthRouter from './api/health.js';
+import supportRouter from './api/support.js';
 import vehiclesRouter from './api/vehicles.js';
 import { closePool, initializeDatabase } from './db/client.js';
 import { env } from './lib/env.js';
@@ -46,6 +47,7 @@ app.get('/api', (_req, res) => {
 app.use('/api', healthRouter);
 app.use('/api', vehiclesRouter);
 app.use('/api', garageRouter);
+app.use('/api', supportRouter);
 
 app.use((req, res) => {
   res.status(404).json({
