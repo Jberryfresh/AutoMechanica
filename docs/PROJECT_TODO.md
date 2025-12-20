@@ -3512,7 +3512,7 @@ Add an abstraction layer over vector memory to allow swapping pgvector with Qdra
 
 #### 7.2.1 — Basic analytics endpoints
 
-- [ ] 🔵 **P3-LOW** — Add metrics endpoints
+- [x] 🟢 **P3-LOW** — Add metrics endpoints
 
 **Description**  
 Add endpoints to expose aggregated metrics for admin dashboards (queue depth, error rates, fitment accuracy).

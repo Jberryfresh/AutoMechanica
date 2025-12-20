@@ -118,4 +118,46 @@ describe('Admin API', () => {
     const body = res.body as { workflow: { state: string } };
     expect(body.workflow.state).toBe('pending');
   });
+
+  it('returns admin metrics with defaults', async () => {
+    pool.query
+      // tasks counts
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      .mockResolvedValueOnce({
+        rows: [
+          { status: 'pending', count: '3' },
+          { status: 'dead', count: '1' },
+        ],
+      })
+      // workflows counts
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      .mockResolvedValueOnce({
+        rows: [
+          { state: 'pending', count: '2' },
+          { state: 'completed', count: '5' },
+        ],
+      })
+      // agent events total
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      .mockResolvedValueOnce({ rows: [{ total: '42' }] })
+      // agent events recent
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      .mockResolvedValueOnce({ rows: [{ total: '7' }] });
+
+    const res = await request(app)
+      .get('/api/admin/metrics')
+      .set('x-admin-key', process.env.ADMIN_API_KEY ?? '');
+
+    expect(res.status).toBe(200);
+    const body = res.body as {
+      tasks: { total: number; byStatus: Record<string, number> };
+      workflows: { total: number; byState: Record<string, number> };
+      agentEvents: { total: number; recentCount: number; lastHours: number };
+    };
+    expect(body.tasks.total).toBe(4);
+    expect(body.workflows.total).toBe(7);
+    expect(body.agentEvents.total).toBe(42);
+    expect(body.agentEvents.recentCount).toBe(7);
+    expect(body.agentEvents.lastHours).toBe(24);
+  });
 });

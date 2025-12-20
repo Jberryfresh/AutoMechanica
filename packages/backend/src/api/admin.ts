@@ -172,4 +172,53 @@ router.post(
   })
 );
 
+router.get(
+  '/admin/metrics',
+  withAdminGuard(async (req, res, _next, pool) => {
+    const hoursRaw = Number(req.query.hours);
+    const hours = Number.isFinite(hoursRaw) && hoursRaw > 0 ? Math.min(hoursRaw, 720) : 24;
+
+    const [taskCountsResult, workflowCountsResult, agentEventsResult, agentEventsRecentResult] =
+      await Promise.all([
+        pool.query<{ status: string; count: string }>(
+          `SELECT status, COUNT(*)::text as count FROM tasks GROUP BY status`
+        ),
+        pool.query<{ state: string; count: string }>(
+          `SELECT state, COUNT(*)::text as count FROM workflows GROUP BY state`
+        ),
+        pool.query<{ total: string }>(`SELECT COUNT(*)::text as total FROM agent_events`),
+        pool.query<{ total: string }>(
+          `SELECT COUNT(*)::text as total FROM agent_events WHERE created_at >= now() - ($1 || ' hours')::interval`,
+          [hours]
+        ),
+      ]);
+
+    const taskCounts = taskCountsResult.rows.reduce<Record<string, number>>((acc, row) => {
+      acc[row.status] = Number(row.count);
+      return acc;
+    }, {});
+
+    const workflowCounts = workflowCountsResult.rows.reduce<Record<string, number>>((acc, row) => {
+      acc[row.state] = Number(row.count);
+      return acc;
+    }, {});
+
+    res.json({
+      tasks: {
+        total: Object.values(taskCounts).reduce((a, b) => a + b, 0),
+        byStatus: taskCounts,
+      },
+      workflows: {
+        total: Object.values(workflowCounts).reduce((a, b) => a + b, 0),
+        byState: workflowCounts,
+      },
+      agentEvents: {
+        total: Number(agentEventsResult.rows[0]?.total ?? 0),
+        lastHours: hours,
+        recentCount: Number(agentEventsRecentResult.rows[0]?.total ?? 0),
+      },
+    });
+  })
+);
+
 export default router;
