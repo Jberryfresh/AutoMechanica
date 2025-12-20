@@ -13,6 +13,7 @@ vi.mock('pg', () => {
     connect = connectMock;
     end = endMock;
     on = onMock;
+    query = queryMock;
   }
 
   return { Pool: MockPool };

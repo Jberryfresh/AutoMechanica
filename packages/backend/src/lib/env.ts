@@ -32,6 +32,7 @@ const envSchema = z.object({
   MEMORY_BACKEND: z.enum(['pgvector', 'qdrant']).default('pgvector'),
   QDRANT_URL: z.string().url('QDRANT_URL must be a valid URL').optional(),
   QDRANT_API_KEY: z.string().optional(),
+  SLOW_QUERY_THRESHOLD_MS: z.coerce.number().int().positive().default(300),
   OPENAI_API_KEY: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
   GOOGLE_API_KEY: z.string().optional(),
