@@ -3481,7 +3481,7 @@ These tasks can be done after a working MVP exists.
 
 #### 7.1.1 — Qdrant adapter (future)
 
-- [ ] 🔵 **P3-LOW** — Prepare Qdrant memory adapter
+- [x] 🟢 **P3-LOW** — Prepare Qdrant memory adapter
 
 **Description**  
 Add an abstraction layer over vector memory to allow swapping pgvector with Qdrant for high-scale search.
