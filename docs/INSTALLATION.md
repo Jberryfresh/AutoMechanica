@@ -47,6 +47,9 @@ Key variables (see `docs/ENV_SETUP_GUIDE.md` for full descriptions):
 - `BACKEND_URL` - API origin (default http://localhost:3001)
 - `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` — LLM credentials (optional until agents are enabled)
 - `VITE_API_BASE_URL` — Frontend API base URL
+- `ENABLE_REQUEST_LOGGING` — Enable HTTP request logging (default true)
+- `SLOW_QUERY_THRESHOLD_MS` — Log DB queries slower than this threshold (ms)
+- `API_RATE_LIMIT_PER_MINUTE` — Requests per minute per IP (global limiter)
 
 Never commit populated `.env` files.
 
