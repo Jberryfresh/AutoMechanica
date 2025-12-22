@@ -1,6 +1,7 @@
 import compression from 'compression';
 import cors from 'cors';
 import express, { type NextFunction, type Request, type Response } from 'express';
+import { rateLimit } from 'express-rate-limit';
 import helmet from 'helmet';
 import pinoHttp from 'pino-http';
 
@@ -42,6 +43,15 @@ const httpLogger = (pinoHttp as unknown as (opts: unknown) => express.RequestHan
   redact: ['req.headers.authorization'],
 });
 
+// Basic global rate limiting to mitigate brute force / abuse.
+const apiRateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: env.API_RATE_LIMIT_PER_MINUTE,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(apiRateLimiter);
 app.use(httpLogger);
 
 app.get('/api', (_req, res) => {
