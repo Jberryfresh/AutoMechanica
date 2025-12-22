@@ -2,7 +2,7 @@ import compression from 'compression';
 import cors from 'cors';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import helmet from 'helmet';
-import morgan from 'morgan';
+import pinoHttp from 'pino-http';
 
 import adminRouter from './api/admin.js';
 import garageRouter from './api/garage.js';
@@ -11,6 +11,7 @@ import supportRouter from './api/support.js';
 import vehiclesRouter from './api/vehicles.js';
 import { closePool, initializeDatabase } from './db/client.js';
 import { env } from './lib/env.js';
+import { logger } from './lib/logger.js';
 
 export interface HttpError extends Error {
   status?: number;
@@ -30,13 +31,18 @@ app.use(compression());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-if (env.ENABLE_REQUEST_LOGGING) {
-  app.use(
-    morgan('combined', {
-      skip: (_req, _res) => env.NODE_ENV === 'test',
-    })
-  );
-}
+const httpLogger = (pinoHttp as unknown as (opts: unknown) => express.RequestHandler)({
+  logger,
+  genReqId: (req: { headers: NodeJS.Dict<string | string[]> }) => {
+    const headers = req.headers;
+    const candidate = headers['x-request-id'];
+    return (Array.isArray(candidate) ? candidate[0] : candidate) ?? crypto.randomUUID();
+  },
+  autoLogging: env.ENABLE_REQUEST_LOGGING && env.NODE_ENV !== 'test',
+  redact: ['req.headers.authorization'],
+});
+
+app.use(httpLogger);
 
 app.get('/api', (_req, res) => {
   res.json({
@@ -58,16 +64,19 @@ app.use((req, res) => {
   });
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((error: HttpError, _req: Request, res: Response, _next: NextFunction) => {
+app.use((error: HttpError, req: Request, res: Response, _next: NextFunction) => {
   const status = error.status ?? 500;
   const payload = {
     error: error.message || 'Internal Server Error',
     details: env.NODE_ENV === 'development' ? error.details : undefined,
   };
   // Log server-side for observability without leaking sensitive info to clients
-  // eslint-disable-next-line no-console
-  console.error('Unhandled error', error);
+  const requestLogger = (req as { log?: { error: (payload: unknown, msg?: string) => void } }).log;
+  if (requestLogger) {
+    requestLogger.error({ err: error }, 'Unhandled error');
+  } else {
+    logger.error({ err: error }, 'Unhandled error');
+  }
   res.status(status).json(payload);
 });
 
@@ -75,20 +84,16 @@ export async function startServer(): Promise<void> {
   await initializeDatabase();
   const port = env.PORT;
   const server = app.listen(port, () => {
-    // eslint-disable-next-line no-console
-    console.info(`Backend server listening on port ${port}`);
-    // eslint-disable-next-line no-console
-    console.info(`Health endpoint available at /api/health`);
+    logger.info(`Backend server listening on port ${port}`);
+    logger.info('Health endpoint available at /api/health');
   });
 
   const shutdown = async (signal: NodeJS.Signals): Promise<void> => {
-    // eslint-disable-next-line no-console
-    console.info(`Received ${signal}, shutting down gracefully...`);
+    logger.info(`Received ${signal}, shutting down gracefully...`);
     await closePool();
     await new Promise<void>((resolve) => {
       server.close(() => {
-        // eslint-disable-next-line no-console
-        console.info('Server closed gracefully');
+        logger.info('Server closed gracefully');
         resolve();
       });
     });

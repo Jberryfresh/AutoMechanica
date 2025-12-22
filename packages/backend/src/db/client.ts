@@ -1,6 +1,7 @@
 import { Pool, type PoolClient, type PoolConfig } from 'pg';
 
 import { env } from '../lib/env.js';
+import { logger } from '../lib/logger.js';
 
 let pool: Pool | null = null;
 
@@ -25,17 +26,40 @@ const redactConnectionString = (connectionString: string): string => {
 
 const logConnectionError = (error: unknown): void => {
   const message = error instanceof Error ? error.message : 'Unknown error';
-  // eslint-disable-next-line no-console
-  console.error('Database connection error', {
-    message,
-    connectionString: redactConnectionString(env.DATABASE_URL),
-  });
+  logger.error(
+    {
+      connectionString: redactConnectionString(env.DATABASE_URL),
+      err: error instanceof Error ? error : undefined,
+    },
+    `Database connection error: ${message}`
+  );
 };
 
 export const getPool = (): Pool => {
   if (pool) return pool;
 
   pool = new Pool(poolConfig);
+  const slowQueryThresholdMs = env.SLOW_QUERY_THRESHOLD_MS;
+
+  const originalQuery = pool.query.bind(pool);
+  // Wrap pool.query to emit timing for slow queries.
+  pool.query = ((text: unknown, params?: unknown[]) => {
+    const start = performance.now();
+    return originalQuery(text as string, params).then((result) => {
+      const duration = performance.now() - start;
+      if (duration >= slowQueryThresholdMs && typeof text === 'string') {
+        logger.warn(
+          {
+            durationMs: Number(duration.toFixed(2)),
+            query: text.split('\n').join(' ').slice(0, 200),
+          },
+          'Slow query detected'
+        );
+      }
+      return result;
+    });
+  }) as Pool['query'];
+
   pool.on('error', (error) => {
     logConnectionError(error);
   });
@@ -71,8 +95,7 @@ export const initializeDatabase = async (): Promise<void> => {
       throw error;
     }
     process.exitCode = 1;
-    // eslint-disable-next-line no-console
-    console.error('Exiting because database is unreachable.');
+    logger.error('Exiting because database is unreachable.');
     process.exit();
   }
 };
