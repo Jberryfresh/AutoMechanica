@@ -3573,7 +3573,7 @@ Monitor database performance with slow query logging and connection pool metrics
 
 #### 8.2.1 — Production security checklist
 
-- [ ] 🔴 **P0-CRITICAL** — Complete security audit
+- [X] 🔴 **P0-CRITICAL** — Complete security audit
 
 **Description**
 Validate all security requirements before launch.
@@ -3588,7 +3588,7 @@ Validate all security requirements before launch.
 
 #### 8.3.1 — Create incident response procedures
 
-- [ ] 🟡 **P1-HIGH** — Document operational procedures
+- [x] 🟡 **P1-HIGH** — Document operational procedures
 
 **Description**
 Create runbooks for common operational scenarios and incidents.
