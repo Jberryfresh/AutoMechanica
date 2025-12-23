@@ -3573,7 +3573,7 @@ Monitor database performance with slow query logging and connection pool metrics
 
 #### 8.2.1 — Production security checklist
 
-- [ ] 🔴 **P0-CRITICAL** — Complete security audit
+- [X] 🔴 **P0-CRITICAL** — Complete security audit
 
 **Description**
 Validate all security requirements before launch.
@@ -3588,7 +3588,7 @@ Validate all security requirements before launch.
 
 #### 8.3.1 — Create incident response procedures
 
-- [ ] 🟡 **P1-HIGH** — Document operational procedures
+- [x] 🟡 **P1-HIGH** — Document operational procedures
 
 **Description**
 Create runbooks for common operational scenarios and incidents.
@@ -3603,7 +3603,7 @@ Create runbooks for common operational scenarios and incidents.
 
 #### 8.4.1 — End-to-end smoke tests
 
-- [ ] 🔴 **P0-CRITICAL** — Production smoke test suite
+- [x] 🔴 **P0-CRITICAL** — Production smoke test suite
 
 **Description**
 Validate critical user flows work correctly in production environment.
@@ -3616,7 +3616,7 @@ Validate critical user flows work correctly in production environment.
 
 #### 8.4.2 — Performance validation
 
-- [ ] 🟡 **P1-HIGH** — Load testing and optimization
+- [x] 🟡 **P1-HIGH** — Load testing and optimization
 
 **Description**
 Validate system meets performance targets from MAIN_PLAN.md Section 7.4.
