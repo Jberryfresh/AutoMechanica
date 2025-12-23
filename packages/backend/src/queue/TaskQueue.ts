@@ -243,23 +243,35 @@ export const markTaskFailed = async (
   errorInfo: Record<string, unknown> | null = null,
   pool: Pool = getPool()
 ): Promise<QueuedTask | null> => {
+  // Read current attempts and max_attempts so we can compute backoff in app code
+  const selectRes = await pool.query<{ attempts: number; max_attempts: number }>(
+    `SELECT attempts, max_attempts FROM tasks WHERE id = $1`,
+    [id]
+  );
+
+  if (!selectRes.rows[0]) return null;
+
+  const currentAttempts = selectRes.rows[0].attempts ?? 0;
+  const maxAttempts = selectRes.rows[0].max_attempts ?? 1;
+  const nextAttempts = currentAttempts + 1;
+
+  const isDead = nextAttempts >= maxAttempts;
+  const availableAt = isDead ? new Date() : new Date(Date.now() + Math.pow(nextAttempts, 2) * BASE_BACKOFF_MS);
+
   const result = await pool.query<TaskRow>(
     `
       UPDATE tasks
-      SET attempts = attempts + 1,
-          error_info = $2,
-          status = CASE WHEN attempts + 1 >= max_attempts THEN 'dead' ELSE 'pending' END,
-          available_at = CASE
-            WHEN attempts + 1 >= max_attempts THEN now()
-            ELSE now() + ((attempts + 1) ^ 2 * interval '1 millisecond' * $3)
-          END,
+      SET attempts = $3,
+          error_info = $4,
+          status = $5,
+          available_at = $6,
           lease_owner = NULL,
           lease_expires_at = NULL,
           updated_at = now()
       WHERE id = $1
       RETURNING *
     `,
-    [id, errorInfo, BASE_BACKOFF_MS]
+    [id, /* placeholder for $2 unused */ null, nextAttempts, errorInfo, isDead ? 'dead' : 'pending', availableAt]
   );
 
   return result.rows[0] ? mapRow(result.rows[0]) : null;
@@ -269,22 +281,34 @@ export const requeueWithBackoff = async (
   id: string,
   pool: Pool = getPool()
 ): Promise<QueuedTask | null> => {
+  // Read current attempts and max_attempts so we can compute backoff in app code
+  const selectRes = await pool.query<{ attempts: number; max_attempts: number }>(
+    `SELECT attempts, max_attempts FROM tasks WHERE id = $1`,
+    [id]
+  );
+
+  if (!selectRes.rows[0]) return null;
+
+  const currentAttempts = selectRes.rows[0].attempts ?? 0;
+  const maxAttempts = selectRes.rows[0].max_attempts ?? 1;
+  const nextAttempts = currentAttempts + 1;
+
+  const isDead = nextAttempts >= maxAttempts;
+  const availableAt = isDead ? new Date() : new Date(Date.now() + Math.pow(nextAttempts, 2) * BASE_BACKOFF_MS);
+
   const result = await pool.query<TaskRow>(
     `
       UPDATE tasks
-      SET status = CASE WHEN attempts + 1 >= max_attempts THEN 'dead' ELSE 'pending' END,
-          attempts = attempts + 1,
-          available_at = CASE
-            WHEN attempts + 1 >= max_attempts THEN now()
-            ELSE now() + ((attempts + 1) ^ 2 * interval '1 millisecond' * $2)
-          END,
+      SET status = $2,
+          attempts = $3,
+          available_at = $4,
           lease_owner = NULL,
           lease_expires_at = NULL,
           updated_at = now()
       WHERE id = $1
       RETURNING *
     `,
-    [id, BASE_BACKOFF_MS]
+    [id, isDead ? 'dead' : 'pending', nextAttempts, availableAt]
   );
 
   return result.rows[0] ? mapRow(result.rows[0]) : null;

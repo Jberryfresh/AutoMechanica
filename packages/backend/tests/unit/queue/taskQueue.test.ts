@@ -89,6 +89,13 @@ const createFakePool = (initial: QueuedTask[] = []): FakePool => {
         store.push(task);
         return { rows: [toRow(task)] };
       }
+      
+      if (text.includes('SELECT attempts, max_attempts FROM tasks WHERE id = $1')) {
+        const id = params[0] as string;
+        const t = store.find((x) => x.id === id);
+        if (!t) return { rows: [] };
+        return { rows: [{ attempts: t.attempts, max_attempts: t.maxAttempts }] };
+      }
 
       if (text.includes('UPDATE tasks') && text.includes('FOR UPDATE SKIP LOCKED')) {
         const [workerId, leaseExpiresAt, now] = params as [string, Date, Date];
@@ -150,6 +157,30 @@ const createFakePool = (initial: QueuedTask[] = []): FakePool => {
         t.status = dead ? 'dead' : 'pending';
         const delayMs = dead ? 0 : t.attempts ** 2 * backoffMs;
         t.availableAt = new Date(Date.now() + delayMs);
+        t.leaseOwner = null;
+        t.leaseExpiresAt = null;
+        t.updatedAt = new Date();
+        return { rows: [toRow(t)] };
+      }
+
+      // New SQL variant: application computes attempts and available_at (various param ordering)
+      if (text.includes('attempts =') && text.includes('available_at')) {
+        // params shape may vary; try to extract nextAttempts and availableAt
+        // Common shape used by TaskQueue.ts update: [id, null, nextAttempts, errorInfo, status, availableAt]
+        const id = params[0] as string;
+        const maybeNextAttempts = params[2] as number | undefined;
+        const maybeAvailableAt = params[5] as Date | undefined;
+        const t = store.find((x) => x.id === id);
+        if (!t) return { rows: [] };
+        if (typeof maybeNextAttempts === 'number') t.attempts = maybeNextAttempts;
+        if (maybeAvailableAt instanceof Date) t.availableAt = maybeAvailableAt;
+        // status may be passed as param[4]
+        const maybeStatus = params[4] as string | undefined;
+        if (maybeStatus) t.status = maybeStatus;
+        else {
+          const dead = t.attempts >= t.maxAttempts;
+          t.status = dead ? 'dead' : 'pending';
+        }
         t.leaseOwner = null;
         t.leaseExpiresAt = null;
         t.updatedAt = new Date();
